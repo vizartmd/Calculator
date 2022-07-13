@@ -2,6 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -9,15 +10,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.Queue;
+
 public class MainWindowController {
 
     @FXML private Pane titlePane;
     @FXML private ImageView btnMinimize, btnMaximize, btnClose;
     @FXML private Label lblResult;
+    @FXML private Label lblInput;
 
     private double x, y;
     private double num1 = 0;
+    private double num2;
     private String operator = "+";
+    private Queue<String> resultQueue;
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -38,26 +44,25 @@ public class MainWindowController {
 
     @FXML
     void onNumericClicked(MouseEvent event) {
-//        int value = Integer.parseInt(((Pane)event.getSource()).getId().replace("btn", ""));
-//        lblResult.setText(Double.parseDouble(lblResult.getText())==0?String.valueOf((double)value):String.valueOf(Double.parseDouble(lblResult.getText())*10+value));
+        int value = Integer.parseInt(((Button)event.getSource()).getId().replace("btn", ""));
+        lblInput.setText(String.valueOf(Math.round(Float.parseFloat(Double.parseDouble(lblInput.getText())==0?String.valueOf((double)value):String.valueOf(Double.parseDouble(lblInput.getText())*10+value)))));
     }
 
     @FXML
     void onSymbolClicked(MouseEvent event) {
-        String symbol = ((Pane)event.getSource()).getId().replace("btn", "");
+        String symbol = ((Button)event.getSource()).getId().replace("btn", "");
         if (symbol.equals("Equals")) {
-            double num2 = Double.parseDouble(lblResult.getText());
+            num2 = Double.parseDouble(lblInput.getText());
             switch (operator) {
                 case "+" -> lblResult.setText((num1+num2) + "");
                 case "-" -> lblResult.setText((num1-num2) + "");
                 case "*" -> lblResult.setText((num1*num2) + "");
                 case "/" -> lblResult.setText((num1/num2) + "");
             }
-            operator = ".";
+            resetResult();
         }
         else if (symbol.equals("Clear")) {
-            lblResult.setText(String.valueOf(0.0));
-            operator = ".";
+            resetResult();
         }
         else {
             switch (symbol) {
@@ -66,8 +71,13 @@ public class MainWindowController {
                 case "Multiply" -> operator = "*";
                 case "Divide" -> operator = "/";
             }
-            num1 = Double.parseDouble(lblResult.getText());
-            lblResult.setText(String.valueOf(0.0));
+            num1 = Double.parseDouble(lblInput.getText());
+            lblInput.setText(String.valueOf(0));
         }
+    }
+
+    private void resetResult() {
+        lblInput.setText(String.valueOf(0));
+        operator = ".";
     }
 }

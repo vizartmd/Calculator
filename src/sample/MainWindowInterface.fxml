@@ -34,11 +34,12 @@
       </AnchorPane>
       <Pane layoutX="-6.0" layoutY="45.0" minHeight="118.0" minWidth="348.0" prefHeight="118.0" prefWidth="348.0" style="-fx-background-color: #F3F3F3;" styleClass="buttonsPane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Label fx:id="lblResult" alignment="CENTER_RIGHT" layoutX="16.0" layoutY="75.0" prefHeight="31.0" prefWidth="319.0" text="0">
+            <Label fx:id="lblResult" alignment="BOTTOM_RIGHT" layoutX="16.0" layoutY="8.0" onMouseClicked="#onSymbolClicked" prefHeight="103.0" prefWidth="319.0" text="0">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
             </Label>
+            <ListView fx:id="myListView" layoutY="-2.0" onMouseClicked="#onSymbolClicked" prefHeight="124.0" prefWidth="349.0" />
          </children>
       </Pane>
       <AnchorPane layoutX="1.0" layoutY="166.0" minHeight="61.0" minWidth="348.0" prefHeight="61.0" prefWidth="348.0" styleClass="inputPane" stylesheets="@MainWindowStyle.css" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

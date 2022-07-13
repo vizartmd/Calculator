@@ -25,6 +25,20 @@
     /*-fx-background-color: transparent;*/
 }
 
+.closeButton:hover {
+    -fx-cursor: hand;
+}
+
+.maximizeButton:hover {
+    -fx-background-color: #555252;
+    -fx-cursor: hand;
+}
+
+.minimizeButton:hover {
+    -fx-background-color: #555252;
+    -fx-cursor: hand;
+}
+
 .gridPane {
     -fx-background-color:  #f7f7f7;
     -fx-background-radius: 0 0 15 15;
@@ -49,6 +63,15 @@
 .btnEquals:pressed {
     -fx-background-color: #0e5519;
     -fx-border-color: #05320c;
+}
+
+.disableClick{
+    pointer-events: none;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 3;
+    -fx-padding: 0;
 }
 
 .btn:pressed {

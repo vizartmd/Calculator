@@ -29,14 +29,15 @@ public class MainWindowController {
     private String operator = "+";
     private final List<String> resultQueue = new LinkedList<>();
 
+
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
             x = mouseEvent.getSceneX();
             y = mouseEvent.getSceneY();
         });
         titlePane.setOnMouseDragged(mouseEvent -> {
-            stage.setX(mouseEvent.getSceneX()+x);
-            stage.setY(mouseEvent.getSceneY()+y);
+            stage.setX(mouseEvent.getSceneX()-x);
+            stage.setY(mouseEvent.getSceneY()-y);
         });
 
         btnClose.setOnMouseClicked(mouseEvent -> stage.close());
@@ -44,6 +45,7 @@ public class MainWindowController {
         btnMaximize.setOnMouseClicked(mouseEvent -> {
             stage.setFullScreen(!stage.isFullScreen());
         });
+        myListView.setEditable(false);
     }
 
     @FXML
@@ -62,28 +64,32 @@ public class MainWindowController {
                     resultQueue.add((num1+num2) + "");
 //                    lblResult.setText(resultQueue.toString());
                     lblInput.setText(String.valueOf(0));
-                    myListView.getItems().add((num1+num2) + "");
+                    myListView.getItems().add(0,(num1+num2) + "");
+                    resetResult();
                 }
                 case "-" -> {
                     resultQueue.add((num1-num2) + "");
 //                    lblResult.setText(resultQueue.toString());
                     lblInput.setText(String.valueOf(0));
                     myListView.getItems().removeAll();
-                    myListView.getItems().add((num1-num2) + "");
+                    myListView.getItems().add(0,(num1-num2) + "");
+                    resetResult();
                 }
                 case "*" -> {
                     resultQueue.add((num1*num2) + "");
 //                    lblResult.setText(resultQueue.toString());
                     lblInput.setText(String.valueOf(0));
                     myListView.getItems().removeAll();
-                    myListView.getItems().add((num1*num2) + "");
+                    myListView.getItems().add(0, (num1*num2) + "");
+                    resetResult();
                 }
                 case "/" -> {
                     resultQueue.add((num1/num2) + "");
 //                    lblResult.setText(resultQueue.toString());
                     lblInput.setText(String.valueOf(0));
                     myListView.getItems().removeAll();
-                    myListView.getItems().add((num1/num2) + "");
+                    myListView.getItems().add(0, (num1/num2) + "");
+                    resetResult();
                 }
             }
         }

@@ -17,9 +17,8 @@ public class MainWindow extends Application {
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setResizable(false);
+//        stage.setResizable(true);
         stage.setTitle("Calculator");
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
         ((MainWindowController)loader.getController()).init(stage);
         stage.show();
     }

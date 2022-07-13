@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class MainWindowController {
 
     @FXML private Pane titlePane;
-    @FXML private ImageView btnMinimize, btnClose;
+    @FXML private ImageView btnMinimize, btnMaximize, btnClose;
     @FXML private Label lblResult;
 
     private double x, y;
@@ -25,18 +25,21 @@ public class MainWindowController {
             y = mouseEvent.getSceneY();
         });
         titlePane.setOnMouseDragged(mouseEvent -> {
-            stage.setX(mouseEvent.getSceneX()-x);
-            stage.setY(mouseEvent.getSceneY()-y);
+            stage.setX(mouseEvent.getSceneX()+x);
+            stage.setY(mouseEvent.getSceneY()+y);
         });
 
         btnClose.setOnMouseClicked(mouseEvent -> stage.close());
         btnMinimize.setOnMouseClicked(mouseEvent -> stage.setIconified(true));
+        btnMaximize.setOnMouseClicked(mouseEvent -> {
+            stage.setFullScreen(!stage.isFullScreen());
+        });
     }
 
     @FXML
     void onNumericClicked(MouseEvent event) {
-        int value = Integer.parseInt(((Pane)event.getSource()).getId().replace("btn", ""));
-        lblResult.setText(Double.parseDouble(lblResult.getText())==0?String.valueOf((double)value):String.valueOf(Double.parseDouble(lblResult.getText())*10+value));
+//        int value = Integer.parseInt(((Pane)event.getSource()).getId().replace("btn", ""));
+//        lblResult.setText(Double.parseDouble(lblResult.getText())==0?String.valueOf((double)value):String.valueOf(Double.parseDouble(lblResult.getText())*10+value));
     }
 
     @FXML
@@ -66,10 +69,5 @@ public class MainWindowController {
             num1 = Double.parseDouble(lblResult.getText());
             lblResult.setText(String.valueOf(0.0));
         }
-    }
-
-    @FXML
-    void onResultClicked(MouseEvent event) {
-        System.out.println("Result pane was clicked! " + event.getSource().toString());
     }
 }

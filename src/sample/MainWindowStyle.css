@@ -22,7 +22,6 @@
     -fx-border-color: transparent;
     -fx-border-width: 0;
     -fx-background-radius: 0;
-    /*-fx-background-color: transparent;*/
 }
 
 .closeButton:hover {
@@ -30,7 +29,6 @@
 }
 
 .maximizeButton:hover {
-    -fx-background-color: #555252;
     -fx-cursor: hand;
 }
 
@@ -65,16 +63,23 @@
     -fx-border-color: #05320c;
 }
 
-.disableClick{
-    pointer-events: none;
-}
-
 .scroll-bar:vertical {
     -fx-pref-width: 3;
-    -fx-padding: 0;
+    -fx-padding: 0px;
 }
 
 .btn:pressed {
     -fx-background-color:#c4c4c4;
--fx-border-color: #959595;
+    -fx-border-color: #959595;
+}
+
+.resultList {
+    -fx-background-color: transparent;
+    -fx-font-size: 40;
+    -fx-alignment: bottom-right;
+}
+
+.list-cell{
+    -fx-background-color: transparent;
+    -fx-font-size:15.0;
 }

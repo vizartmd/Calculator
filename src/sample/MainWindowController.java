@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,11 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 public class MainWindowController {
 
     @FXML private Pane titlePane;
@@ -25,12 +19,11 @@ public class MainWindowController {
     @FXML private ListView<String> myListView;
 
     private double x, y;
-    private double num1 = 0;
+    private double num1;
     private double num2;
     private String operator = "+";
     private String inputProcess = "";
-    private final List<String> resultQueue = new LinkedList<>();
-
+    private boolean isFinishedOperation = true;
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -48,77 +41,86 @@ public class MainWindowController {
             stage.setFullScreen(!stage.isFullScreen());
         });
         myListView.setEditable(false);
-        lblInput1.setText(inputProcess);
+        lblInput.setText(inputProcess);
     }
 
     @FXML
     void onNumericClicked(MouseEvent event) {
-        int value = Integer.parseInt(((Button)event.getSource()).getId().replace("btn", ""));
-        lblInput.setText(inputProcess.equals("")?String.valueOf(value):String.valueOf(Math.round(Integer.parseInt(lblInput.getText())*10+value)));
-        inputProcess += value;
-        lblInput1.setText(inputProcess);
+        if (isFinishedOperation) {
+            reset();
+            isFinishedOperation = false;
+        }
+        String buttonId = ((Button)event.getSource()).getId();
+        String btnValue = buttonId.substring(3);
+        if (btnValue.equals("Dot")) {
+            if (lblInput1.getText().contains(".")) {
+                return;
+            }
+            btnValue = ".";
+        }
+        inputProcess += btnValue;
+        lblInput1.setText(lblInput1.getText().concat(btnValue));
+        lblInput.setText(inputProcess);
+
     }
 
     @FXML
     void onSymbolClicked(MouseEvent event) {
         String symbol = ((Button)event.getSource()).getId().replace("btn", "");
         if (symbol.equals("Equals")) {
-            num2 = Integer.parseInt(lblInput.getText());
+            num2 = Double.parseDouble(lblInput1.getText());
             switch (operator) {
                 case "+" -> {
-                    resultQueue.add((num1+num2) + "");
-                    lblInput.setText(String.valueOf(num1+num2));
                     if (needToRound((num1+num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1+num2)) + "");
-                        lblInput1.setText(String.valueOf(((int)(num1+num2))));
+                        lblInput.setText(String.valueOf((int)(num1+num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1+num2) + "");
-                        lblInput1.setText(String.valueOf(num1+num2));
+                        lblInput.setText(String.valueOf(num1+num2));
                     }
-                    resetResult();
+                    lblInput1.setText(String.valueOf(num1+num2));
                 }
                 case "-" -> {
-                    resultQueue.add((num1-num2) + "");
-                    lblInput.setText(String.valueOf((num1-num2)));
                     if (needToRound((num1-num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1-num2)) + "");
-                        lblInput1.setText(String.valueOf(((int)(num1-num2))));
+                        lblInput.setText(String.valueOf((int)(num1-num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1-num2) + "");
-                        lblInput1.setText(String.valueOf(num1-num2));
+                        lblInput.setText(String.valueOf(num1-num2));
                     }
-                    resetResult();
+                    lblInput1.setText(String.valueOf(num1-num2));
                 }
                 case "*" -> {
-                    resultQueue.add((num1*num2) + "");
-                    lblInput.setText(String.valueOf(num1*num2));
                     if (needToRound((num1*num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1*num2)) + "");
-                        lblInput1.setText(String.valueOf(((int)(num1*num2))));
+                        lblInput.setText(String.valueOf((int)(num1*num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1*num2) + "");
-                        lblInput1.setText(String.valueOf(num1*num2));
+                        lblInput.setText(String.valueOf(num1*num2));
                     }
-                    resetResult();
+                    lblInput1.setText(String.valueOf(num1*num2));
                 }
                 case "/" -> {
-                    resultQueue.add((num1/num2) + "");
-                    lblInput.setText(String.valueOf(num1/num2));
                     if (needToRound((num1/num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1/num2)) + "");
-                        lblInput1.setText(String.valueOf(((int)(num1/num2))));
+                        lblInput.setText(String.valueOf((int)(num1/num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1/num2) + "");
-                        lblInput1.setText(String.valueOf(num1/num2));
+                        lblInput.setText(String.valueOf(num1/num2));
                     }
-                    resetResult();
+                    lblInput1.setText(String.valueOf(num1/num2));
                 }
             }
+            isFinishedOperation = true;
+            inputProcess = "";
         }
         else if (symbol.equals("Clear")) {
             reset();
         }
         else {
+            isFinishedOperation = false;
+            num1 = Double.parseDouble(lblInput1.getText());
+            inputProcess = String.valueOf(num1);
             switch (symbol) {
                 case "Plus" -> {
                     operator = "+";
@@ -136,10 +138,13 @@ public class MainWindowController {
                     operator = "/";
                     inputProcess += (" " + operator + " ");
                 }
+                case "Dot" -> {
+                    operator = ".";
+                    inputProcess += (" " + operator + " ");
+                }
             }
-            num1 = Integer.parseInt(lblInput.getText());
-            lblInput.setText(String.valueOf(0));
-            lblInput1.setText(inputProcess);
+            lblInput1.setText("");
+            lblInput.setText(inputProcess);
         }
     }
 
@@ -159,14 +164,13 @@ public class MainWindowController {
     }
 
     private void resetResult() {
-        lblInput.setText(String.valueOf(0));
-        operator = ".";
+        lblInput1.setText("");
         inputProcess = "";
     }
 
     private void reset() {
-        lblInput1.setText(String.valueOf(0));
-        operator = ".";
+        lblInput1.setText("");
+        lblInput.setText("");
         inputProcess = "";
     }
 

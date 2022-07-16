@@ -1,6 +1,8 @@
 .idea/
+dependency-reduced-pom.xml
 Calculator.iml
 Libraries/
 META-INF/
 out/
-.gitignore
+target/
+

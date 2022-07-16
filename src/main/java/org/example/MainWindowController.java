@@ -26,10 +26,9 @@ public class MainWindowController {
     private double x, y;
     private double num1;
     private double num2;
-    private String operator = "!";
+    private String operator = "+";
     private String inputProcess = "";
     private boolean isFinishedOperation = true;
-    private boolean isFirstOperandReady = false;
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -123,35 +122,32 @@ public class MainWindowController {
         else if (symbol.equals("Clear")) {
             reset();
         }
-        else if (symbol.equals("Back")) {
-            // TODO
-        }
         else {
-            if (inputProcess.contains("+") || inputProcess.contains("-") ||inputProcess.contains("*") ||inputProcess.contains("/")) {
-                return;
-            }
             isFinishedOperation = false;
             num1 = Double.parseDouble(lblInput1.getText());
-            isFirstOperandReady = true;
+            inputProcess = String.valueOf(num1);
             switch (symbol) {
                 case "Plus":
                     operator = "+";
+                    inputProcess += (" " + operator + " ");
                     break;
                 case "Minus":
                     operator = "-";
+                    inputProcess += (" " + operator + " ");
                     break;
                 case "Multiply":
                     operator = "*";
+                    inputProcess += (" " + operator + " ");
                     break;
                 case "Divide":
                     operator = "/";
+                    inputProcess += (" " + operator + " ");
                     break;
                 case "Dot":
                     operator = ".";
-//                    inputProcess += (" " + operator + " ");
+                    inputProcess += (" " + operator + " ");
                     break;
             }
-            inputProcess += operator;
             lblInput1.setText("");
             lblInput.setText(inputProcess);
         }

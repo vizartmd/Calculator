@@ -11,6 +11,12 @@
     -fx-background-radius: 14 14 0 0;
 }
 
+.listView {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+
 .inputPane {
     -fx-background-color:  #ffffff;
     -fx-border-style: solid none solid none;

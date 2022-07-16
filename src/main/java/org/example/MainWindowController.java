@@ -66,7 +66,6 @@ public class MainWindowController {
         inputProcess += btnValue;
         lblInput1.setText(lblInput1.getText().concat(btnValue));
         lblInput.setText(inputProcess);
-
     }
 
     @FXML
@@ -166,11 +165,6 @@ public class MainWindowController {
             }
         }
         return need;
-    }
-
-    private void resetResult() {
-        lblInput1.setText("");
-        inputProcess = "";
     }
 
     private void reset() {

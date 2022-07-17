@@ -81,42 +81,42 @@ public class MainWindowController {
                 case "+":
                     if (needToRound((num1+num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1+num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1+num2 + 1 - 1)));
+                        lblInput.setText(String.valueOf((int)(num1+num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1+num2) + "");
-                        lblInput.setText(String.valueOf(num1+num2 + 1 - 1));
+                        lblInput.setText(String.valueOf(num1+num2));
                     }
-                    lblInput1.setText(String.valueOf(num1+num2 + 1 - 1));
+                    lblInput1.setText(String.valueOf(num1+num2));
                     break;
                 case "-":
                     if (needToRound((num1-num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1-num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1-num2 + 1 - 1)));
+                        lblInput.setText(String.valueOf((int)(num1-num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1-num2) + "");
-                        lblInput.setText(String.valueOf(num1-num2 + 1 - 1));
+                        lblInput.setText(String.valueOf(num1-num2));
                     }
-                    lblInput1.setText(String.valueOf(num1-num2 + 1 - 1));
+                    lblInput1.setText(String.valueOf(num1-num2));
                     break;
                 case "*":
                     if (needToRound((num1*num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1*num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1*num2 + 1 - 1)));
+                        lblInput.setText(String.valueOf((int)(num1*num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1*num2) + "");
-                        lblInput.setText(String.valueOf(num1*num2 + 1 - 1));
+                        lblInput.setText(String.valueOf(num1*num2));
                     }
-                    lblInput1.setText(String.valueOf(num1*num2 + 1 - 1));
+                    lblInput1.setText(String.valueOf(num1*num2));
                     break;
                 case "/":
                     if (needToRound((num1/num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1/num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1/num2 + 1 - 1)));
+                        lblInput.setText(String.valueOf((int)(num1/num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1/num2) + "");
-                        lblInput.setText(String.valueOf(num1/num2 + 1 - 1));
+                        lblInput.setText(String.valueOf(num1/num2));
                     }
-                    lblInput1.setText(String.valueOf(num1/num2 + 1 - 1));
+                    lblInput1.setText(String.valueOf(num1/num2));
                     break;
             }
             isFinishedOperation = true;

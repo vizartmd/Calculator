@@ -61,6 +61,10 @@ public class MainWindowController {
             if (lblInput1.getText().contains(".")) {
                 return;
             }
+            if (lblInput1.getText().equals("")) {
+                inputProcess += ("0");
+                lblInput.setText(inputProcess);
+            }
             btnValue = ".";
         }
         inputProcess += btnValue;
@@ -77,42 +81,42 @@ public class MainWindowController {
                 case "+":
                     if (needToRound((num1+num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1+num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1+num2)));
+                        lblInput.setText(String.valueOf((int)(num1+num2 + 1 - 1)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1+num2) + "");
-                        lblInput.setText(String.valueOf(num1+num2));
+                        lblInput.setText(String.valueOf(num1+num2 + 1 - 1));
                     }
-                    lblInput1.setText(String.valueOf(num1+num2));
+                    lblInput1.setText(String.valueOf(num1+num2 + 1 - 1));
                     break;
                 case "-":
                     if (needToRound((num1-num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1-num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1-num2)));
+                        lblInput.setText(String.valueOf((int)(num1-num2 + 1 - 1)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1-num2) + "");
-                        lblInput.setText(String.valueOf(num1-num2));
+                        lblInput.setText(String.valueOf(num1-num2 + 1 - 1));
                     }
-                    lblInput1.setText(String.valueOf(num1-num2));
+                    lblInput1.setText(String.valueOf(num1-num2 + 1 - 1));
                     break;
                 case "*":
                     if (needToRound((num1*num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1*num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1*num2)));
+                        lblInput.setText(String.valueOf((int)(num1*num2 + 1 - 1)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1*num2) + "");
-                        lblInput.setText(String.valueOf(num1*num2));
+                        lblInput.setText(String.valueOf(num1*num2 + 1 - 1));
                     }
-                    lblInput1.setText(String.valueOf(num1*num2));
+                    lblInput1.setText(String.valueOf(num1*num2 + 1 - 1));
                     break;
                 case "/":
                     if (needToRound((num1/num2))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)(num1/num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1/num2)));
+                        lblInput.setText(String.valueOf((int)(num1/num2 + 1 - 1)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + (num1/num2) + "");
-                        lblInput.setText(String.valueOf(num1/num2));
+                        lblInput.setText(String.valueOf(num1/num2 + 1 - 1));
                     }
-                    lblInput1.setText(String.valueOf(num1/num2));
+                    lblInput1.setText(String.valueOf(num1/num2 + 1 - 1));
                     break;
             }
             isFinishedOperation = true;
@@ -122,9 +126,16 @@ public class MainWindowController {
             reset();
         }
         else {
+            if (inputProcess.contains("+") || inputProcess.contains("-") ||inputProcess.contains("*") ||inputProcess.contains("/")) {
+                return;
+            }
             isFinishedOperation = false;
             num1 = Double.parseDouble(lblInput1.getText());
-            inputProcess = String.valueOf(num1);
+            if (needToRound(num1)) {
+                inputProcess = String.valueOf(Math.round(num1));
+            } else {
+                inputProcess = String.valueOf(num1);
+            }
             switch (symbol) {
                 case "Plus":
                     operator = "+";
@@ -144,7 +155,11 @@ public class MainWindowController {
                     break;
                 case "Dot":
                     operator = ".";
-                    inputProcess += (" " + operator + " ");
+                    if (lblInput1.getText().equals("") || lblInput1.getText().equals(".")) {
+                        return;
+                    } else {
+                        inputProcess += (" " + operator + " ");
+                    }
                     break;
             }
             lblInput1.setText("");

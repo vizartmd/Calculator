@@ -63,10 +63,15 @@ public class MainWindowController {
             lblInput1.setText(btnValue);
             return;
         }
-        if (!inputProcess.equals("")) {
-            if (inputProcess.substring(inputProcess.length() -1).equals("√") && inputProcess.length() > 2) {
-                return;
-            }
+//        if (!lblInput.getText().equals("")) {
+//            if (inputProcess.substring(inputProcess.length() -1).equals("√") && inputProcess.length() > 3) {
+//                return;
+//            }
+//        }
+        System.out.println("inputProcess = " + inputProcess);
+        System.out.println("lblInput.getText() = " + lblInput.getText());
+        if (inputProcess.contains("√") && inputProcess.length() >= 3 && !String.valueOf(inputProcess.charAt(0)).equals("√")) {
+            return;
         }
         if (lblInput.getText().contains("²")) {
             return;
@@ -92,9 +97,11 @@ public class MainWindowController {
         if (symbol.equals("Equals")) {
             if (inputProcess.contains("²")) {
                 double num = Double.parseDouble(lblInput1.getText());
-                myListView.getItems().add(0, inputProcess + " = " + num*num);
-                lblInput.setText(num*num + "");
-                lblInput1.setText(num*num + "");
+                myListView.getItems().add(0, inputProcess + " = " + Math.round(num*num));
+                String s = String.valueOf(Math.round(num * num));
+                num1 = num * num;
+                lblInput.setText(s);
+                lblInput1.setText(s);
                 inputProcess = "";
                 return;
             }
@@ -161,8 +168,9 @@ public class MainWindowController {
                     || lblInput.getText().contains("/") || lblInput.getText().contains("²")) {
                 return;
             }
-            lblInput1.setText(lblInput.getText());
-            lblInput.setText(lblInput.getText() + "²");
+            inputProcess = String.valueOf(Float.parseFloat(lblInput.getText()));
+            lblInput1.setText(inputProcess);
+            lblInput.setText(inputProcess + "²");
             inputProcess += "²";
         }
         else if (symbol.equals("Radic")) {
@@ -171,17 +179,17 @@ public class MainWindowController {
             }
             if (!lblInput.getText().equals("")) {
                 if(lblInput.getText().substring(0, 1).equals("-")){
-                    reset();
-                    inputProcess = "";
+//                    reset();
+//                    inputProcess = "";
                     return;
                 }
-                    lblInput.setText(lblInput1.getText() + " √");
-                    inputProcess = lblInput.getText();
+                lblInput.setText(lblInput1.getText() + " √");
+                inputProcess = lblInput.getText();
             } else {
                 lblInput.setText("√ ");
                 inputProcess += lblInput.getText();
             }
-            isFinishedOperation = true;
+//            isFinishedOperation = true;
         }
         else {
             if ((lblInput.getText().contains("+") || lblInput.getText().contains("-")

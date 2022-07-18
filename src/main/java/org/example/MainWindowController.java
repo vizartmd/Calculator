@@ -98,12 +98,12 @@ public class MainWindowController {
                 inputProcess = "";
                 return;
             }
-            if (inputProcess.equals("√ ")) {
-                return;
-            }
             if (inputProcess.contains("√")) {
                 double num = Double.parseDouble(String.valueOf(lblInput1.getText()));
-                extractSqrt(num);
+                myListView.getItems().add(0, inputProcess + " = " + Math.sqrt(num));
+                lblInput.setText(String.valueOf(Math.sqrt(num)));
+                lblInput1.setText(String.valueOf(Math.sqrt(num)));
+                inputProcess = "";
                 return;
             }
             num2 = Double.parseDouble(lblInput1.getText());
@@ -156,10 +156,9 @@ public class MainWindowController {
             reset();
         }
         else if (symbol.equals("Pow")) {
-            String lastCharactrer = lblInput.getText().substring(lblInput.getText().length() - 1);
-            if (lblInput.getText().equals("") || lastCharactrer.equals("+") || lblInput.getText().contains("√")
-                    || lastCharactrer.equals("-") || lastCharactrer.equals("*")
-                    || lastCharactrer.equals("/") || lastCharactrer.equals("²")) {
+            if (lblInput.getText().equals("") || lblInput.getText().contains(" ") || lblInput.getText().contains("+") || lblInput.getText().contains("√")
+                    || lblInput.getText().contains("-") || lblInput.getText().contains("*")
+                    || lblInput.getText().contains("/") || lblInput.getText().contains("²")) {
                 return;
             }
             lblInput1.setText(lblInput.getText());
@@ -167,7 +166,7 @@ public class MainWindowController {
             inputProcess += "²";
         }
         else if (symbol.equals("Radic")) {
-            if (lblInput.getText().contains("²")) {
+            if (lblInput.getText().contains("²") || lblInput.getText().contains("√")) {
                 return;
             }
             if (!lblInput.getText().equals("")) {
@@ -181,8 +180,8 @@ public class MainWindowController {
             } else {
                 lblInput.setText("√ ");
                 inputProcess += lblInput.getText();
-                isFinishedOperation = false;
             }
+            isFinishedOperation = true;
         }
         else {
             if ((lblInput.getText().contains("+") || lblInput.getText().contains("-")
@@ -226,18 +225,6 @@ public class MainWindowController {
             lblInput1.setText("");
             lblInput.setText(inputProcess);
         }
-    }
-
-    private void extractSqrt(double num) {
-        if (needToRound(num)) {
-            myListView.getItems().add(0, inputProcess + " = " + Math.sqrt(num) + "");
-            lblInput.setText(String.valueOf(Math.sqrt(num)));
-        } else {
-            myListView.getItems().add(0, inputProcess + " = " + Math.sqrt(num) + "");
-            lblInput.setText(String.valueOf(Math.sqrt(num)));
-        }
-        lblInput1.setText(String.valueOf(Math.sqrt(num)));
-        inputProcess = "";
     }
 
     private boolean needToRound(double num) {

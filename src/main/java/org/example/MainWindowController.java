@@ -68,6 +68,9 @@ public class MainWindowController {
                 return;
             }
         }
+        if (lblInput.getText().contains("²")) {
+            return;
+        }
         if (btnValue.equals("Dot")) {
             if (lblInput1.getText().contains(".")) {
                 return;
@@ -87,6 +90,14 @@ public class MainWindowController {
     void onSymbolClicked(MouseEvent event) {
         String symbol = ((Button)event.getSource()).getId().replace("btn", "");
         if (symbol.equals("Equals")) {
+            if (inputProcess.contains("²")) {
+                double num = Double.parseDouble(lblInput1.getText());
+                myListView.getItems().add(0, inputProcess + " = " + num*num);
+                lblInput.setText(num*num + "");
+                lblInput1.setText(num*num + "");
+                inputProcess = "";
+                return;
+            }
             if (inputProcess.equals("√ ")) {
                 return;
             }
@@ -144,7 +155,21 @@ public class MainWindowController {
         else if (symbol.equals("Clear")) {
             reset();
         }
+        else if (symbol.equals("Pow")) {
+            String lastCharactrer = lblInput.getText().substring(lblInput.getText().length() - 1);
+            if (lblInput.getText().equals("") || lastCharactrer.equals("+") || lblInput.getText().contains("√")
+                    || lastCharactrer.equals("-") || lastCharactrer.equals("*")
+                    || lastCharactrer.equals("/") || lastCharactrer.equals("²")) {
+                return;
+            }
+            lblInput1.setText(lblInput.getText());
+            lblInput.setText(lblInput.getText() + "²");
+            inputProcess += "²";
+        }
         else if (symbol.equals("Radic")) {
+            if (lblInput.getText().contains("²")) {
+                return;
+            }
             if (!lblInput.getText().equals("")) {
                 if(lblInput.getText().substring(0, 1).equals("-")){
                     reset();
@@ -161,7 +186,7 @@ public class MainWindowController {
         }
         else {
             if ((lblInput.getText().contains("+") || lblInput.getText().contains("-")
-                        || lblInput.getText().contains("*") || lblInput.getText().contains("/")
+                        || lblInput.getText().contains("*") || lblInput.getText().contains("/") || lblInput.getText().contains("²")
                         || lblInput.getText().contains("√")) &&  !lblInput.getText().substring(0, 1).equals("-")) {
                     return;
             }

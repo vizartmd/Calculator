@@ -59,7 +59,6 @@ public class MainWindowController {
         String btnValue = buttonId.substring(3);
         if (inputProcess.equals("√ ")) {
             inputProcess += btnValue;
-            System.out.println(inputProcess);
             lblInput.setText(inputProcess);
             lblInput1.setText(btnValue);
             return;
@@ -100,7 +99,7 @@ public class MainWindowController {
             switch (operator) {
                 case "+":
                     if (needToRound((num1+num2))) {
-                        myListView.getItems().add(0, inputProcess + " = " + (Math.nextUp(num1+num2)) + "");
+                        myListView.getItems().add(0, inputProcess + " = " + ((int)Math.nextUp(num1+num2)) + "");
                         lblInput.setText(String.valueOf(Math.nextUp(num1+num2)));
                     } else {
                         myListView.getItems().add(0, inputProcess + " = " + Math.nextUp(num1+num2) + "");
@@ -147,8 +146,13 @@ public class MainWindowController {
         }
         else if (symbol.equals("Radic")) {
             if (!lblInput.getText().equals("")) {
-                lblInput.setText(lblInput1.getText() + " √");
-                inputProcess = lblInput.getText();
+                if(lblInput.getText().substring(0, 1).equals("-")){
+                    reset();
+                    inputProcess = "";
+                    return;
+                }
+                    lblInput.setText(lblInput1.getText() + " √");
+                    inputProcess = lblInput.getText();
             } else {
                 lblInput.setText("√ ");
                 inputProcess += lblInput.getText();
@@ -156,10 +160,10 @@ public class MainWindowController {
             }
         }
         else {
-            if (inputProcess.contains("+") || inputProcess.contains("-")
-                    || inputProcess.contains("*") ||inputProcess.contains("/")
-                    || inputProcess.contains("√") ||inputProcess.equals("")) {
-                return;
+            if ((lblInput.getText().contains("+") || lblInput.getText().contains("-")
+                        || lblInput.getText().contains("*") || lblInput.getText().contains("/")
+                        || lblInput.getText().contains("√")) &&  !lblInput.getText().substring(0, 1).equals("-")) {
+                    return;
             }
             isFinishedOperation = false;
             num1 = Double.parseDouble(lblInput1.getText());

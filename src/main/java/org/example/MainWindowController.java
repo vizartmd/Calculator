@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.text.DecimalFormat;
+
 public class MainWindowController {
 
     @FXML
@@ -63,13 +65,6 @@ public class MainWindowController {
             lblInput1.setText(btnValue);
             return;
         }
-//        if (!lblInput.getText().equals("")) {
-//            if (inputProcess.substring(inputProcess.length() -1).equals("√") && inputProcess.length() > 3) {
-//                return;
-//            }
-//        }
-        System.out.println("inputProcess = " + inputProcess);
-        System.out.println("lblInput.getText() = " + lblInput.getText());
         if (inputProcess.contains("√") && inputProcess.length() >= 3 && !String.valueOf(inputProcess.charAt(0)).equals("√")) {
             return;
         }
@@ -94,64 +89,79 @@ public class MainWindowController {
     @FXML
     void onSymbolClicked(MouseEvent event) {
         String symbol = ((Button)event.getSource()).getId().replace("btn", "");
+        DecimalFormat df = new DecimalFormat("###.########");
         if (symbol.equals("Equals")) {
+            if (isFinishedOperation) return;
             if (inputProcess.contains("²")) {
                 double num = Double.parseDouble(lblInput1.getText());
-                myListView.getItems().add(0, inputProcess + " = " + Math.round(num*num));
-                String s = String.valueOf(Math.round(num * num));
+                String s;
+                if (needToRound(num*num)) {
+                    s = String.valueOf(Math.round(num * num));
+                } else {
+                    s = String.valueOf(num * num);
+                }
+                myListView.getItems().add(0, inputProcess + " = " + s);
                 num1 = num * num;
                 lblInput.setText(s);
                 lblInput1.setText(s);
                 inputProcess = "";
+                isFinishedOperation = true;
                 return;
             }
             if (inputProcess.contains("√")) {
-                double num = Double.parseDouble(String.valueOf(lblInput1.getText()));
-                myListView.getItems().add(0, inputProcess + " = " + Math.sqrt(num));
-                lblInput.setText(String.valueOf(Math.sqrt(num)));
-                lblInput1.setText(String.valueOf(Math.sqrt(num)));
+                double num = Double.parseDouble(lblInput1.getText());
+                String s;
+                if (needToRound(Math.sqrt(num))) {
+                    s = String.valueOf(Math.round(Math.sqrt(num)));
+                } else {
+                    s = String.valueOf(Math.sqrt(num));
+                }
+                myListView.getItems().add(0, inputProcess + " = " + s);
+                lblInput.setText(s);
+                lblInput1.setText(s);
                 inputProcess = "";
+                isFinishedOperation = true;
                 return;
             }
             num2 = Double.parseDouble(lblInput1.getText());
             switch (operator) {
                 case "+":
-                    if (needToRound((num1+num2))) {
+                    if (needToRound(Double.parseDouble(df.format(num1+num2)))) {
                         myListView.getItems().add(0, inputProcess + " = " + ((int)Math.nextUp(num1+num2)) + "");
-                        lblInput.setText(String.valueOf(Math.nextUp(num1+num2)));
+                        lblInput.setText(String.valueOf((int)Math.nextUp(num1+num2)));
                     } else {
-                        myListView.getItems().add(0, inputProcess + " = " + Math.nextUp(num1+num2) + "");
-                        lblInput.setText(String.valueOf(Math.nextUp(num1+num2)));
+                        myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1+num2)));
+                        lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1+num2))));
                     }
                     lblInput1.setText(String.valueOf(num1+num2));
                     break;
                 case "-":
-                    if (needToRound((num1-num2))) {
-                        myListView.getItems().add(0, inputProcess + " = " + ((int)(num1-num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1-num2)));
+                    if (needToRound(Double.parseDouble(df.format(num1-num2)))) {
+                        myListView.getItems().add(0, inputProcess + " = " + ((int)Math.nextUp(num1-num2)) + "");
+                        lblInput.setText(String.valueOf((int)Math.nextUp(num1-num2)));
                     } else {
-                        myListView.getItems().add(0, inputProcess + " = " + (num1-num2) + "");
-                        lblInput.setText(String.valueOf(num1-num2));
+                        myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1-num2)));
+                        lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1-num2))));
                     }
                     lblInput1.setText(String.valueOf(num1-num2));
                     break;
                 case "*":
-                    if (needToRound((num1*num2))) {
-                        myListView.getItems().add(0, inputProcess + " = " + ((int)(num1*num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1*num2)));
+                    if (needToRound(Double.parseDouble(df.format(num1*num2)))) {
+                        myListView.getItems().add(0, inputProcess + " = " + ((int)Math.nextUp(num1*num2)) + "");
+                        lblInput.setText(String.valueOf((int)Math.nextUp(num1*num2)));
                     } else {
-                        myListView.getItems().add(0, inputProcess + " = " + (num1*num2) + "");
-                        lblInput.setText(String.valueOf(num1*num2));
+                        myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1*num2)));
+                        lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1*num2))));
                     }
                     lblInput1.setText(String.valueOf(num1*num2));
                     break;
                 case "/":
-                    if (needToRound((num1/num2))) {
-                        myListView.getItems().add(0, inputProcess + " = " + ((int)(num1/num2)) + "");
-                        lblInput.setText(String.valueOf((int)(num1/num2)));
+                    if (needToRound(Double.parseDouble(df.format(num1/num2)))) {
+                        myListView.getItems().add(0, inputProcess + " = " + ((int)Math.nextUp(num1/num2)) + "");
+                        lblInput.setText(String.valueOf((int)Math.nextUp(num1/num2)));
                     } else {
-                        myListView.getItems().add(0, inputProcess + " = " + (num1/num2) + "");
-                        lblInput.setText(String.valueOf(num1/num2));
+                        myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1/num2)));
+                        lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1/num2))));
                     }
                     lblInput1.setText(String.valueOf(num1/num2));
                     break;
@@ -168,10 +178,11 @@ public class MainWindowController {
                     || lblInput.getText().contains("/") || lblInput.getText().contains("²")) {
                 return;
             }
-            inputProcess = String.valueOf(Float.parseFloat(lblInput.getText()));
+            inputProcess = String.valueOf(lblInput.getText());
             lblInput1.setText(inputProcess);
             lblInput.setText(inputProcess + "²");
             inputProcess += "²";
+            isFinishedOperation = false;
         }
         else if (symbol.equals("Radic")) {
             if (lblInput.getText().contains("²") || lblInput.getText().contains("√")) {
@@ -179,17 +190,17 @@ public class MainWindowController {
             }
             if (!lblInput.getText().equals("")) {
                 if(lblInput.getText().substring(0, 1).equals("-")){
-//                    reset();
-//                    inputProcess = "";
                     return;
                 }
-                lblInput.setText(lblInput1.getText() + " √");
+                lblInput1.setText(lblInput.getText());
+                lblInput.setText(lblInput.getText() + " √");
                 inputProcess = lblInput.getText();
+                isFinishedOperation = false;
             } else {
                 lblInput.setText("√ ");
-                inputProcess += lblInput.getText();
+                inputProcess = lblInput.getText();
+                isFinishedOperation = false;
             }
-//            isFinishedOperation = true;
         }
         else {
             if ((lblInput.getText().contains("+") || lblInput.getText().contains("-")
@@ -199,11 +210,7 @@ public class MainWindowController {
             }
             isFinishedOperation = false;
             num1 = Double.parseDouble(lblInput1.getText());
-            if (needToRound(num1)) {
-                inputProcess = String.valueOf(Math.round(num1));
-            } else {
-                inputProcess = String.valueOf(num1);
-            }
+            inputProcess = df.format(num1);
             switch (symbol) {
                 case "Plus":
                     operator = "+";

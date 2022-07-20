@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="400.0" minWidth="350.0" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
+<AnchorPane minHeight="400.0" minWidth="350.0" onKeyPressed="#onKeyPressed" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
    <children>
       <AnchorPane fx:id="titlePane" layoutY="-3.0" minHeight="47.0" minWidth="348.0" prefHeight="47.0" prefWidth="348.0" styleClass="titlePane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
          <children>
@@ -57,7 +57,7 @@
          </children></AnchorPane>
       <GridPane layoutY="245.0" minHeight="170.0" minWidth="330.0" prefHeight="170.0" prefWidth="330.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-            <Button fx:id="btn7" layoutX="6.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onNumericClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="7">
+            <Button fx:id="btn7" layoutX="6.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onNumericClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="7">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -65,7 +65,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btn8" layoutX="57.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onNumericClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="8" GridPane.columnIndex="1">
+            <Button fx:id="btn8" layoutX="57.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onNumericClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="8" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -73,7 +73,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btn9" layoutX="110.0" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onNumericClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="9" GridPane.columnIndex="2">
+            <Button fx:id="btn9" layoutX="110.0" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onNumericClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="9" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -177,7 +177,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btnPlus" layoutX="174.0" layoutY="124.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <Button fx:id="btnPlus" layoutX="174.0" layoutY="124.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -185,7 +185,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btnMinus" layoutX="171.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <Button fx:id="btnMinus" layoutX="171.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -193,7 +193,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btnMultiply" layoutX="169.0" layoutY="48.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="×" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <Button fx:id="btnMultiply" layoutX="169.0" layoutY="48.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="×" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
@@ -201,7 +201,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="btnDivide" layoutX="168.0" layoutY="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyTyped="#key" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="÷" GridPane.columnIndex="3">
+            <Button fx:id="btnDivide" layoutX="168.0" layoutY="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onSymbolClicked" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="÷" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>

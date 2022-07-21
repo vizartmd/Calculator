@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="400.0" minWidth="350.0" onKeyPressed="#onKeyPressed" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
+<AnchorPane minHeight="400.0" minWidth="350.0" onKeyReleased="#onKeyPressed" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
    <children>
       <AnchorPane fx:id="titlePane" layoutY="-3.0" minHeight="47.0" minWidth="348.0" prefHeight="47.0" prefWidth="348.0" styleClass="titlePane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
          <children>

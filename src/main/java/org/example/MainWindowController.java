@@ -11,6 +11,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindowController {
 
@@ -33,6 +35,12 @@ public class MainWindowController {
     private String btnValue = "";
     private boolean isFinishedOperation = true;
     DecimalFormat df = new DecimalFormat("###.########");
+    private static int operationsCount = 0;
+    private static int operandsCount = 0;
+    private String currentOperand = "";
+    private List<String> operands = new ArrayList<>();
+    private List<String> operations = new ArrayList<>();
+    private double result;
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -55,90 +63,129 @@ public class MainWindowController {
 
     @FXML
     private void onKeyPressed (KeyEvent evt) {
-        System.out.println(evt.getCode());
+//        System.out.println(evt.getCode());
         switch (evt.getCode()) {
             case DECIMAL:
-                btnValue = ".";
-//                operator = ".";
-                inputProcess += operator;
+                if (currentOperand.contains(".")) {
+                    return;
+                }
+                if (currentOperand.equals("")) {
+                    currentOperand += "0.";
+                    btnValue = "0.";
+                    inputProcess += "0.";
+                } else {
+                    currentOperand += ".";
+                    btnValue += ".";
+                    inputProcess += ".";
+                }
                 lblInput.setText(inputProcess);
                 break;
             case ADD:
                 operator = "+";
-                inputProcess += operator;
-                lblInput.setText(inputProcess);
+                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    changeOperator();
+                }
+                subtractOperation();
                 break;
             case SUBTRACT:
                 operator = "-";
-                inputProcess += operator;
-                lblInput.setText(inputProcess);
+                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    changeOperator();
+                }
+                subtractOperation();
                 break;
             case MULTIPLY:
                 operator = "*";
-                inputProcess += operator;
-                lblInput.setText(inputProcess);
+                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    changeOperator();
+                }
+                multiplyOperation();
                 break;
             case DIVIDE:
                 operator = "/";
-                inputProcess += operator;
-                lblInput.setText(inputProcess);
+                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    changeOperator();
+                }
+                divideOperations();
                 break;
             case NUMPAD1:
                 btnValue = "1";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD2:
                 btnValue = "2";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD3:
                 btnValue = "3";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD4:
                 btnValue = "4";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD5:
                 btnValue = "5";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD6:
                 btnValue = "6";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD7:
                 btnValue = "7";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD8:
                 btnValue = "8";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD9:
                 btnValue = "9";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
+                currentOperand += btnValue;
                 operator = "";
                 break;
             case NUMPAD0:
                 btnValue = "0";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case LEFT_PARENTHESIS:
+                btnValue = "(";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                operator = "";
+                break;
+            case RIGHT_PARENTHESIS:
+                btnValue = ")";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
                 operator = "";
@@ -153,6 +200,74 @@ public class MainWindowController {
                 inputProcess = "";
                 break;
         }
+        evaluatingResult();
+    }
+
+    private void removeLastCharacterFromCurrentOperand() {
+        currentOperand = currentOperand.substring(0, currentOperand.length() - 1);
+        lblInput.setText(lblInput.getText().substring(0, lblInput.getText().length() - 1));
+        inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
+        btnValue = btnValue.substring(0, btnValue.length() - 1);
+        operations.remove(operations.size() - 1);
+    }
+
+    private void addOperation() {
+        inputProcess += operator;
+        lblInput.setText(inputProcess);
+        operations.add("ADD");
+        operationsCount++;
+        operands.add(currentOperand);
+        operandsCount++;
+        currentOperand = "";
+    }
+
+    private void subtractOperation() {
+        inputProcess += operator;
+        lblInput.setText(inputProcess);
+        operations.add("SUBTRACT");
+        operationsCount++;
+        operands.add(currentOperand);
+        operandsCount++;
+        currentOperand = "";
+    }
+
+    private void multiplyOperation() {
+        inputProcess += operator;
+        lblInput.setText(inputProcess);
+        operations.add("MULTIPLY");
+        operationsCount++;
+        operands.add(currentOperand);
+        operandsCount++;
+        currentOperand = "";
+    }
+
+    private void divideOperations() {
+        inputProcess += operator;
+        lblInput.setText(inputProcess);
+        operations.add("DIVIDE");
+        operationsCount++;
+        operands.add(currentOperand);
+        operandsCount++;
+        currentOperand = "";
+    }
+
+    private void changeOperator() {
+        removeLastCharacterFromCurrentOperand();
+    }
+
+    private void evaluatingResult() {
+        System.out.println("inputProcess = " + inputProcess);
+        System.out.println("operandsCount = " + operandsCount);
+        System.out.println("operationsCount = " + operationsCount);
+        System.out.println("currentOperand = " + currentOperand);
+        System.out.println("btnValue = " + btnValue);
+        for (int i = 0; i < operands.size() - 1; i++) {
+            System.out.println("operand " + i + " : " + operands.get(i));
+        }
+        for (int i = 0; i < operations.size() - 1; i++) {
+            System.out.println("operations " + i + " : " + operations.get(i));
+        }
+        System.out.println("result = " + result);
     }
 
     private void checkOperator(DecimalFormat df) {
@@ -383,5 +498,11 @@ public class MainWindowController {
         lblInput1.setText("");
         lblInput.setText("");
         inputProcess = "";
+        currentOperand = "";
+        btnValue = "";
+        operations.clear();
+        operands.clear();
+        operationsCount = 0;
+        operandsCount = 0;
     }
 }

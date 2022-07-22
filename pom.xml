@@ -20,6 +20,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjdk.nashorn/nashorn-core -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <version>15.2</version>
+        </dependency>
+
 
     </dependencies>
     <build>

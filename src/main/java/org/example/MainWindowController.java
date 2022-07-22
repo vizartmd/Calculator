@@ -14,14 +14,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-public class MainWindowController<ActionListener> {
+public class MainWindowController {
 
     @FXML
     private Pane titlePane;
@@ -43,9 +42,9 @@ public class MainWindowController<ActionListener> {
     private String currentOperand = "";
     private List<String> operands = new ArrayList<>();
     private List<String> operations = new ArrayList<>();
-    ScriptEngineManager scriptEngineManager;
-    ScriptEngine scriptEngine;
-    Object expResult;
+    private ScriptEngineManager scriptEngineManager;
+    private ScriptEngine scriptEngine;
+    private Object expResult;
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -67,9 +66,7 @@ public class MainWindowController<ActionListener> {
     }
 
     @FXML
-    private void onKeyPressed (KeyEvent evt) throws ScriptException, InterruptedException {
-        System.out.println(evt.getCode());
-        System.out.println("inputProcess = " + inputProcess);
+    private void onKeyPressed (KeyEvent evt) {
         switch (evt.getCode()) {
             case DECIMAL:
                 if (currentOperand.contains(".") || inputProcess.equals("-")) {
@@ -224,7 +221,7 @@ public class MainWindowController<ActionListener> {
                 reset();
                 break;
             case ENTER:
-                if (inputProcess.equals("") || !areTheBracketsInPairs()) {
+                if (inputProcess.equals("")) {
                     return;
                 }
                 scriptEngineManager = new ScriptEngineManager();
@@ -487,21 +484,15 @@ public class MainWindowController<ActionListener> {
                 lblInput.setText(inputProcess);
                 break;
             case "LeftParenthesis":
-//                if (!inputProcess.endsWith("+") || !inputProcess.endsWith("-") || !inputProcess.endsWith("*") || !inputProcess.endsWith("/")) {
-//                    return;
-//                }
                 inputProcess += "(";
                 lblInput.setText(inputProcess);
                 break;
             case "RightParenthesis":
-//                if (inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-//                    return;
-//                }
                 inputProcess += ")";
                 lblInput.setText(inputProcess);
                 break;
             case "Equals":
-                if (inputProcess.equals("") || !areTheBracketsInPairs()) {
+                if (inputProcess.equals("")) {
                     return;
                 }
                 scriptEngineManager = new ScriptEngineManager();
@@ -510,32 +501,6 @@ public class MainWindowController<ActionListener> {
                 break;
         }
         System.out.println("inputProcess = " + inputProcess);
-    }
-
-    private boolean areTheBracketsInPairs() {
-        boolean theBracketsAreInPairs;
-        if (!inputProcess.contains("(") || !inputProcess.contains(")")) {
-            theBracketsAreInPairs = true;
-        } else {
-            theBracketsAreInPairs = leftBracketsCountEqualsRightBracketsCount();
-        }
-        return theBracketsAreInPairs;
-    }
-
-    private boolean leftBracketsCountEqualsRightBracketsCount() {
-        int leftBracketsCount = 0;
-        int rightBracketsCount = 0;
-        String leftBracket = "(";
-        String rightBracket = ")";
-        for (int i = 0; i < inputProcess.length(); i++) {
-            if (leftBracket.equals(String.valueOf(inputProcess.charAt(i)))) {
-                leftBracketsCount++;
-            }
-            if (rightBracket.equals(String.valueOf(inputProcess.charAt(i)))) {
-                rightBracketsCount++;
-            }
-        }
-        return leftBracketsCount == rightBracketsCount;
     }
 
     private void reset() {

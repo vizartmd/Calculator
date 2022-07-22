@@ -1,5 +1,8 @@
 package org.example;
 
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,13 +11,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
-public class MainWindowController {
+public class MainWindowController<ActionListener> {
 
     @FXML
     private Pane titlePane;
@@ -25,22 +32,20 @@ public class MainWindowController {
     @FXML
     private Label lblInput1;
     @FXML
+    private Label wrongExpression;
+    @FXML
     private ListView<String> myListView;
 
     private double x, y;
-    private double num1;
-    private double num2;
     private String operator = "+";
     private String inputProcess = "";
     private String btnValue = "";
-    private boolean isFinishedOperation = true;
-    DecimalFormat df = new DecimalFormat("###.########");
-    private static int operationsCount = 0;
-    private static int operandsCount = 0;
     private String currentOperand = "";
     private List<String> operands = new ArrayList<>();
     private List<String> operations = new ArrayList<>();
-    private double result;
+    ScriptEngineManager scriptEngineManager;
+    ScriptEngine scriptEngine;
+    Object expResult;
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -62,11 +67,12 @@ public class MainWindowController {
     }
 
     @FXML
-    private void onKeyPressed (KeyEvent evt) {
-//        System.out.println(evt.getCode());
+    private void onKeyPressed (KeyEvent evt) throws ScriptException, InterruptedException {
+        System.out.println(evt.getCode());
+        System.out.println("inputProcess = " + inputProcess);
         switch (evt.getCode()) {
             case DECIMAL:
-                if (currentOperand.contains(".")) {
+                if (currentOperand.contains(".") || inputProcess.equals("-")) {
                     return;
                 }
                 if (currentOperand.equals("")) {
@@ -81,30 +87,41 @@ public class MainWindowController {
                 lblInput.setText(inputProcess);
                 break;
             case ADD:
-                operator = "+";
-                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    changeOperator();
+                if (inputProcess.equals("") || inputProcess.equals("-")  || inputProcess.endsWith("(")) {
+                    return;
                 }
-                subtractOperation();
+                operator = "+";
+                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
+                }
+                addOperation();
                 break;
             case SUBTRACT:
                 operator = "-";
-                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    changeOperator();
+                if (inputProcess.equals("-") || inputProcess.endsWith("(")){
+                    return;
+                } else if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
                 }
                 subtractOperation();
                 break;
             case MULTIPLY:
+                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")){
+                    return;
+                }
                 operator = "*";
-                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    changeOperator();
+                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
                 }
                 multiplyOperation();
                 break;
             case DIVIDE:
+                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")){
+                    return;
+                }
                 operator = "/";
-                if (currentOperand.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    changeOperator();
+                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
                 }
                 divideOperations();
                 break;
@@ -179,45 +196,72 @@ public class MainWindowController {
                 operator = "";
                 break;
             case LEFT_PARENTHESIS:
+                if (!inputProcess.endsWith("+") || !inputProcess.endsWith("-") || !inputProcess.endsWith("*") || !inputProcess.endsWith("/")) {
+                    return;
+                }
                 btnValue = "(";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
                 operator = "";
                 break;
             case RIGHT_PARENTHESIS:
+                if (inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    return;
+                }
                 btnValue = ")";
                 inputProcess += btnValue;
                 lblInput.setText(inputProcess);
                 operator = "";
                 break;
-            case EQUALS:
-                if (isFinishedOperation) return;
-                if (getPower()) return;
-                if (getRadical()) return;
-                num2 = Double.parseDouble(lblInput1.getText());
-                checkOperator(df);
-                isFinishedOperation = true;
-                inputProcess = "";
+            case BACK_SPACE:
+                if (inputProcess.equals("")) {
+                    return;
+                }
+                inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
+                lblInput.setText(inputProcess);
+                break;
+            case ESCAPE:
+                reset();
+                break;
+            case ENTER:
+                if (inputProcess.equals("") || !areTheBracketsInPairs()) {
+                    return;
+                }
+                scriptEngineManager = new ScriptEngineManager();
+                scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
+                checkExpResult();
                 break;
         }
-        evaluatingResult();
     }
 
-    private void removeLastCharacterFromCurrentOperand() {
-        currentOperand = currentOperand.substring(0, currentOperand.length() - 1);
-        lblInput.setText(lblInput.getText().substring(0, lblInput.getText().length() - 1));
-        inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
-        btnValue = btnValue.substring(0, btnValue.length() - 1);
-        operations.remove(operations.size() - 1);
+    private void checkExpResult() {
+        try {
+            expResult = scriptEngine.eval(inputProcess);
+            lblInput.setText(expResult.toString());
+            lblInput.setText(expResult.toString());
+            myListView.getItems().add(0, inputProcess + " = " + expResult);
+            inputProcess = "";
+        }
+        catch (ScriptException e) {
+            System.out.println(e.getMessage());
+            wrongExpression.setText("wrong expression!");
+            wrongExpression.setTextFill(Color.color(1, 0, 0));
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent e) {
+                    wrongExpression.setText(null);
+                }
+            });
+            pause.play();
+        }
     }
 
     private void addOperation() {
         inputProcess += operator;
         lblInput.setText(inputProcess);
         operations.add("ADD");
-        operationsCount++;
         operands.add(currentOperand);
-        operandsCount++;
         currentOperand = "";
     }
 
@@ -225,9 +269,7 @@ public class MainWindowController {
         inputProcess += operator;
         lblInput.setText(inputProcess);
         operations.add("SUBTRACT");
-        operationsCount++;
         operands.add(currentOperand);
-        operandsCount++;
         currentOperand = "";
     }
 
@@ -235,9 +277,7 @@ public class MainWindowController {
         inputProcess += operator;
         lblInput.setText(inputProcess);
         operations.add("MULTIPLY");
-        operationsCount++;
         operands.add(currentOperand);
-        operandsCount++;
         currentOperand = "";
     }
 
@@ -245,185 +285,177 @@ public class MainWindowController {
         inputProcess += operator;
         lblInput.setText(inputProcess);
         operations.add("DIVIDE");
-        operationsCount++;
         operands.add(currentOperand);
-        operandsCount++;
         currentOperand = "";
     }
 
-    private void changeOperator() {
-        removeLastCharacterFromCurrentOperand();
-    }
-
-    private void evaluatingResult() {
-        System.out.println("inputProcess = " + inputProcess);
-        System.out.println("operandsCount = " + operandsCount);
-        System.out.println("operationsCount = " + operationsCount);
-        System.out.println("currentOperand = " + currentOperand);
-        System.out.println("btnValue = " + btnValue);
-        for (int i = 0; i < operands.size() - 1; i++) {
-            System.out.println("operand " + i + " : " + operands.get(i));
+    private void removeOperator() {
+        if (currentOperand.length() > 0) {
+            currentOperand = currentOperand.substring(0, currentOperand.length() - 1);
         }
-        for (int i = 0; i < operations.size() - 1; i++) {
-            System.out.println("operations " + i + " : " + operations.get(i));
+        inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
+        if (btnValue.length() > 0) {
+            btnValue = btnValue.substring(0, btnValue.length() - 1) + operator;
         }
-        System.out.println("result = " + result);
-    }
-
-    private void checkOperator(DecimalFormat df) {
-        switch (operator) {
-            case "+":
-                if (needToRound(Double.parseDouble(df.format(num1 + num2)))) {
-                    myListView.getItems().add(0, inputProcess + " = " + ((int) Math.nextUp(num1 + num2)) + "");
-                    lblInput.setText(String.valueOf((int) Math.nextUp(num1 + num2)));
-                } else {
-                    myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1 + num2)));
-                    lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1 + num2))));
-                }
-                lblInput1.setText(String.valueOf(num1 + num2));
-                break;
-            case "-":
-                if (needToRound(Double.parseDouble(df.format(num1 - num2)))) {
-                    myListView.getItems().add(0, inputProcess + " = " + ((int) Math.nextUp(num1 - num2)) + "");
-                    lblInput.setText(String.valueOf((int) Math.nextUp(num1 - num2)));
-                } else {
-                    myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1 - num2)));
-                    lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1 - num2))));
-                }
-                lblInput1.setText(String.valueOf(num1 - num2));
-                break;
-            case "*":
-                if (needToRound(Double.parseDouble(df.format(num1 * num2)))) {
-                    myListView.getItems().add(0, inputProcess + " = " + ((int) Math.nextUp(num1 * num2)) + "");
-                    lblInput.setText(String.valueOf((int) Math.nextUp(num1 * num2)));
-                } else {
-                    myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1 * num2)));
-                    lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1 * num2))));
-                }
-                lblInput1.setText(String.valueOf(num1 * num2));
-                break;
-            case "/":
-                if (needToRound(Double.parseDouble(df.format(num1 / num2)))) {
-                    myListView.getItems().add(0, inputProcess + " = " + ((int) Math.nextUp(num1 / num2)) + "");
-                    lblInput.setText(String.valueOf((int) Math.nextUp(num1 / num2)));
-                } else {
-                    myListView.getItems().add(0, inputProcess + " = " + Double.parseDouble(df.format(num1 / num2)));
-                    lblInput.setText(String.valueOf(Double.parseDouble(df.format(num1 / num2))));
-                }
-                lblInput1.setText(String.valueOf(num1 / num2));
-                break;
+        if (operations.size() > 0) {
+            operations.remove(operations.size() - 1);
         }
-    }
-
-    private boolean getRadical() {
-        if (inputProcess.contains("√")) {
-            double num = Double.parseDouble(lblInput1.getText());
-            String s;
-            if (needToRound(Math.sqrt(num))) {
-                s = String.valueOf(Math.round(Math.sqrt(num)));
-            } else {
-                s = String.valueOf(Math.sqrt(num));
-            }
-            myListView.getItems().add(0, inputProcess + " = " + s);
-            lblInput.setText(s);
-            lblInput1.setText(s);
-            inputProcess = "";
-            isFinishedOperation = true;
-            return true;
+        if (operands.size() > 0) {
+            operands.remove(operands.size() - 1);
         }
-        return false;
-    }
-
-    private boolean getPower() {
-        if (inputProcess.contains("²")) {
-            double num = Double.parseDouble(lblInput1.getText());
-            String s;
-            if (needToRound(num * num)) {
-                s = String.valueOf(Math.round(num * num));
-            } else {
-                s = String.valueOf(num * num);
-            }
-            myListView.getItems().add(0, inputProcess + " = " + s);
-            num1 = num * num;
-            lblInput.setText(s);
-            lblInput1.setText(s);
-            inputProcess = "";
-            isFinishedOperation = true;
-            return true;
-        }
-        return false;
     }
 
     @FXML
-    void onNumericClicked(MouseEvent event) {
-        if (isFinishedOperation) {
-            reset();
-            isFinishedOperation = false;
-        }
-        String buttonId = ((Button)event.getSource()).getId();
-        btnValue = buttonId.substring(3);
-        if (inputProcess.equals("√")) {
-            inputProcess += btnValue;
-            lblInput.setText(inputProcess);
-            lblInput1.setText(btnValue);
-            return;
-        }
-        if (inputProcess.contains("√") && inputProcess.length() >= 3 && !String.valueOf(inputProcess.charAt(0)).equals("√")) {
-            return;
-        }
-        if (lblInput.getText().contains("²")) {
-            return;
-        }
-        if (btnValue.equals("Dot")) {
-            if (lblInput1.getText().contains(".")) {
-                return;
-            }
-            if (lblInput1.getText().equals("")) {
-                inputProcess += ("0");
-                lblInput.setText(inputProcess);
-            }
-            btnValue = ".";
-        }
-        inputProcess += btnValue;
-        lblInput1.setText(lblInput1.getText().concat(btnValue));
-        lblInput.setText(inputProcess);
-    }
-
-    @FXML
-    void onSymbolClicked(MouseEvent event) {
-        String symbol = ((Button)event.getSource()).getId().replace("btn", "");
-        DecimalFormat df = new DecimalFormat("###.########");
+    void onMousePressed(MouseEvent event) throws ScriptException, InterruptedException {
+        String symbol = ((Button) event.getSource()).getId().replace("btn", "");
+        System.out.println(symbol);
         switch (symbol) {
-            case "Equals":
-                if (isFinishedOperation) return;
-                if (getPower()) return;
-                if (getRadical()) return;
-                num2 = Double.parseDouble(lblInput1.getText());
-                checkOperator(df);
-                isFinishedOperation = true;
-                inputProcess = "";
+            case "Dot":
+                if (currentOperand.contains(".") || inputProcess.equals("-")) {
+                    return;
+                }
+                if (currentOperand.equals("") || inputProcess.endsWith("(")) {
+                    currentOperand += "0.";
+                    btnValue = "0.";
+                    inputProcess += "0.";
+                } else {
+                    currentOperand += ".";
+                    btnValue += ".";
+                    inputProcess += ".";
+                }
+                lblInput.setText(inputProcess);
                 break;
-            case "Clear":
-                reset();
+            case "Plus":
+                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
+                    return;
+                }
+                operator = "+";
+                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
+                }
+                addOperation();
+                break;
+            case "Minus":
+                operator = "-";
+                if (inputProcess.equals("-") || inputProcess.endsWith("(")) {
+                    return;
+                } else if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
+                }
+                subtractOperation();
+                break;
+            case "Multiply":
+                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
+                    return;
+                }
+                operator = "*";
+                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
+                }
+                multiplyOperation();
+                break;
+            case "Divide":
+                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
+                    return;
+                }
+                operator = "/";
+                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+                    removeOperator();
+                }
+                divideOperations();
+                break;
+            case "1":
+                btnValue = "1";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "2":
+                btnValue = "2";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "3":
+                btnValue = "3";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "4":
+                btnValue = "4";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "5":
+                btnValue = "5";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "6":
+                btnValue = "6";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "7":
+                btnValue = "7";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "8":
+                btnValue = "8";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "9":
+                btnValue = "9";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
+                break;
+            case "0":
+                btnValue = "0";
+                inputProcess += btnValue;
+                lblInput.setText(inputProcess);
+                currentOperand += btnValue;
+                operator = "";
                 break;
             case "Pow":
-                if (lblInput.getText().equals("") || lblInput.getText().contains(" ") || lblInput.getText().contains("+") || lblInput.getText().contains("√")
+                if (lblInput.getText().equals("") || lblInput.getText().contains("+")
                         || lblInput.getText().contains("-") || lblInput.getText().contains("*")
-                        || lblInput.getText().contains("/") || lblInput.getText().contains("²")) {
+                        || lblInput.getText().contains("/")) {
                     return;
                 }
                 inputProcess = String.valueOf(lblInput.getText());
                 lblInput1.setText(inputProcess);
-                lblInput.setText(inputProcess + "²");
                 inputProcess += "²";
-                isFinishedOperation = false;
+                double powResult = Math.pow(Double.parseDouble(lblInput1.getText()), 2);
+                myListView.getItems().add(0, inputProcess + " = " + powResult);
+                reset();
+                lblInput.setText(String.valueOf(powResult));
                 break;
             case "Radic":
-                if (lblInput.getText().contains("²") || lblInput.getText().contains("√")) {
+                if (lblInput.getText().equals("") || lblInput.getText().contains("+")
+                        || lblInput.getText().contains("-") || lblInput.getText().contains("*")
+                        || lblInput.getText().contains("/")) {
                     return;
                 }
                 if (!lblInput.getText().equals("")) {
-                    if (lblInput.getText().substring(0, 1).equals("-")) {
+                    if (lblInput.getText().startsWith("-")) {
                         return;
                     }
                     lblInput1.setText(lblInput.getText());
@@ -431,67 +463,79 @@ public class MainWindowController {
                 } else {
                     lblInput.setText("√");
                 }
+                Double sqrtResult = Math.sqrt(Double.parseDouble(lblInput1.getText()));
                 inputProcess = lblInput.getText();
-                isFinishedOperation = false;
+                myListView.getItems().add(0, inputProcess + " = " + sqrtResult);
+                reset();
+                lblInput.setText(String.valueOf(sqrtResult));
                 break;
-            default:
-                if ((lblInput.getText().contains("+") || lblInput.getText().contains("-")
-                        || lblInput.getText().contains("*") || lblInput.getText().contains("/") || lblInput.getText().contains("²")
-                        || lblInput.getText().contains("√")) && !lblInput.getText().substring(0, 1).equals("-")) {
+            case "Procent":
+                if (inputProcess.equals("")) {
                     return;
                 }
-                isFinishedOperation = false;
-                num1 = Double.parseDouble(lblInput1.getText());
-                inputProcess = df.format(num1);
-                switch (symbol) {
-                    case "Plus":
-                        operator = "+";
-                        inputProcess += operator;
-                        btnValue = "";
-                        break;
-                    case "Minus":
-                        operator = "-";
-                        inputProcess += operator;
-                        btnValue = "";
-                        break;
-                    case "Multiply":
-                        operator = "*";
-                        inputProcess += operator;
-                        btnValue = "";
-                        break;
-                    case "Divide":
-                        operator = "/";
-                        inputProcess += operator;
-                        btnValue = "";
-                        break;
-                    case "Dot":
-                        operator = ".";
-                        if (lblInput1.getText().equals("") || lblInput1.getText().equals(".")) {
-                            return;
-                        } else {
-                            inputProcess += operator;
-                        }
-                        break;
-                }
-                lblInput1.setText("");
+                inputProcess += "%";
                 lblInput.setText(inputProcess);
                 break;
+            case "Clear":
+                reset();
+                break;
+            case "Erase":
+                if (inputProcess.equals("")) {
+                    return;
+                }
+                inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
+                lblInput.setText(inputProcess);
+                break;
+            case "LeftParenthesis":
+//                if (!inputProcess.endsWith("+") || !inputProcess.endsWith("-") || !inputProcess.endsWith("*") || !inputProcess.endsWith("/")) {
+//                    return;
+//                }
+                inputProcess += "(";
+                lblInput.setText(inputProcess);
+                break;
+            case "RightParenthesis":
+//                if (inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+//                    return;
+//                }
+                inputProcess += ")";
+                lblInput.setText(inputProcess);
+                break;
+            case "Equals":
+                if (inputProcess.equals("") || !areTheBracketsInPairs()) {
+                    return;
+                }
+                scriptEngineManager = new ScriptEngineManager();
+                scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
+                checkExpResult();
+                break;
         }
+        System.out.println("inputProcess = " + inputProcess);
     }
 
-    private boolean needToRound(double num) {
-        String numToString = String.valueOf(num);
-        int decimalIndex = numToString.indexOf(".");
-        numToString = numToString.substring(decimalIndex+1);
-        char[] arr = numToString.toCharArray();
-        boolean need = true;
-        for (char c : arr) {
-            if (c != '0') {
-                need = false;
-                break;
+    private boolean areTheBracketsInPairs() {
+        boolean theBracketsAreInPairs;
+        if (!inputProcess.contains("(") || !inputProcess.contains(")")) {
+            theBracketsAreInPairs = true;
+        } else {
+            theBracketsAreInPairs = leftBracketsCountEqualsRightBracketsCount();
+        }
+        return theBracketsAreInPairs;
+    }
+
+    private boolean leftBracketsCountEqualsRightBracketsCount() {
+        int leftBracketsCount = 0;
+        int rightBracketsCount = 0;
+        String leftBracket = "(";
+        String rightBracket = ")";
+        for (int i = 0; i < inputProcess.length(); i++) {
+            if (leftBracket.equals(String.valueOf(inputProcess.charAt(i)))) {
+                leftBracketsCount++;
+            }
+            if (rightBracket.equals(String.valueOf(inputProcess.charAt(i)))) {
+                rightBracketsCount++;
             }
         }
-        return need;
+        return leftBracketsCount == rightBracketsCount;
     }
 
     private void reset() {
@@ -502,7 +546,5 @@ public class MainWindowController {
         btnValue = "";
         operations.clear();
         operands.clear();
-        operationsCount = 0;
-        operandsCount = 0;
     }
 }

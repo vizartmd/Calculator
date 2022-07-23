@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="400.0" minWidth="350.0" onKeyPressed="#onKeyPressed" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
+<AnchorPane minHeight="400.0" minWidth="350.0" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
    <children>
       <AnchorPane fx:id="titlePane" minHeight="47.0" minWidth="348.0" prefHeight="47.0" prefWidth="348.0" styleClass="titlePane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
          <children>
-            <Button alignment="CENTER" layoutX="53.0" layoutY="8.0" mnemonicParsing="false" styleClass="basicMode" text="Basic Mode ⌄" textFill="WHITE" AnchorPane.topAnchor="8.0">
+            <Button fx:id="modeBtn" alignment="CENTER" layoutX="53.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#onMousePressedModeButton" styleClass="basicMode" text="Basic Mode ⌄" textFill="WHITE" AnchorPane.topAnchor="8.0">
                <font>
                   <Font size="15.0" />
                </font>
@@ -75,7 +75,7 @@
             </Label>
             <Label fx:id="wrongExpression" alignment="CENTER" layoutX="1.0" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children></AnchorPane>
-      <GridPane layoutY="245.0" minHeight="170.0" minWidth="340.0" prefHeight="170.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0">
+      <GridPane fx:id="gridPane" layoutY="245.0" minHeight="170.0" minWidth="340.0" prefHeight="170.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0">
          <children>
             <Button fx:id="btn7" layoutX="6.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="7">
                <GridPane.margin>

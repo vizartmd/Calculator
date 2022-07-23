@@ -4,18 +4,23 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import static org.example.PopOver.ArrowLocation.TOP_CENTER;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -34,6 +39,8 @@ public class MainWindowController {
     private Label wrongExpression;
     @FXML
     private ListView<String> myListView;
+    @FXML
+    private Button modeBtn;
 
     private double x, y;
     private String operator = "+";
@@ -63,6 +70,32 @@ public class MainWindowController {
         });
         myListView.setEditable(false);
         lblInput.setText(inputProcess);
+    }
+
+    @FXML
+    void onMousePressedModeButton(MouseEvent event) {
+        Label lblName = new Label("John Doe");
+        lblName.paddingProperty().set(new Insets(3));
+        RadioButton radioButton1 = new RadioButton();
+        radioButton1.paddingProperty().set(new Insets(5));
+
+        Label lblStreet = new Label("123 Hello Street");
+        lblStreet.paddingProperty().set(new Insets(3));
+        Label lblCityStateZip = new Label("MadeUpCity, XX 55555");
+        lblCityStateZip.paddingProperty().set(new Insets(3));
+        VBox vBox = new VBox(radioButton1, lblStreet, lblCityStateZip);
+        //Create PopOver and add look and feel
+        PopOver popOver = new PopOver(vBox);
+        popOver.setFadeInDuration(new Duration(100));
+        popOver.setArrowLocation(TOP_CENTER);
+        popOver.setArrowSize(12);
+
+        if (!popOver.isShowing()) {
+            popOver.show(modeBtn);
+//            modeBtn.styleProperty().setValue("-fx-background-color: black");
+        } else {
+            popOver.hide();
+        }
     }
 
     @FXML
@@ -303,7 +336,7 @@ public class MainWindowController {
     }
 
     @FXML
-    void onMousePressed(MouseEvent event) throws ScriptException, InterruptedException {
+    void onMousePressed(MouseEvent event) {
         String symbol = ((Button) event.getSource()).getId().replace("btn", "");
         switch (symbol) {
             case "Dot":

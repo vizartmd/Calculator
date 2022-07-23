@@ -3,6 +3,8 @@
 <!--   </children>-->
 <!--</AnchorPane>-->
 
+<?import org.controlsfx.control.*?>
+<?import javafx.embed.swing.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -12,9 +14,14 @@
 
 <AnchorPane minHeight="400.0" minWidth="350.0" onKeyPressed="#onKeyPressed" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
    <children>
-      <AnchorPane fx:id="titlePane" layoutY="-3.0" minHeight="47.0" minWidth="348.0" prefHeight="47.0" prefWidth="348.0" styleClass="titlePane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
+      <AnchorPane fx:id="titlePane" minHeight="47.0" minWidth="348.0" prefHeight="47.0" prefWidth="348.0" styleClass="titlePane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
          <children>
-            <ImageView fx:id="btnClose" fitHeight="39.0" fitWidth="20.0" layoutX="316.0" layoutY="14.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" styleClass="closeButton" AnchorPane.rightAnchor="14.0">
+            <Button alignment="CENTER" layoutX="53.0" layoutY="8.0" mnemonicParsing="false" styleClass="basicMode" text="Basic Mode ⌄" textFill="WHITE" AnchorPane.topAnchor="8.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="btnClose" fitHeight="39.0" fitWidth="20.0" layoutX="316.0" layoutY="14.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" styleClass="closeButton" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                <image>
                   <Image url="@images/close.png" />
                </image>
@@ -29,6 +36,11 @@
                   <Image url="@images/hide.png" />
                </image>
             </ImageView>
+            <Button layoutX="184.0" layoutY="8.0" mnemonicParsing="false" styleClass="hamburger" text="☰" textFill="WHITE" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="8.0">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="1.0" layoutY="48.0" minHeight="121.0" minWidth="348.0" prefHeight="121.0" prefWidth="348.0">
@@ -36,7 +48,14 @@
             <ListView fx:id="myListView" blendMode="DARKEN" nodeOrientation="RIGHT_TO_LEFT" prefWidth="350.0" styleClass="listView" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding></ListView>
+               </padding>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></ListView>
          </children>
          <opaqueInsets>
             <Insets />
@@ -56,11 +75,11 @@
             </Label>
             <Label fx:id="wrongExpression" alignment="CENTER" layoutX="1.0" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children></AnchorPane>
-      <GridPane layoutY="245.0" minHeight="170.0" minWidth="330.0" prefHeight="170.0" prefWidth="330.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+      <GridPane layoutY="245.0" minHeight="170.0" minWidth="340.0" prefHeight="170.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0">
          <children>
             <Button fx:id="btn7" layoutX="6.0" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="7">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -68,7 +87,7 @@
             </Button>
             <Button fx:id="btn8" layoutX="57.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="8" GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -76,7 +95,7 @@
             </Button>
             <Button fx:id="btn9" layoutX="110.0" layoutY="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="9" GridPane.columnIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -84,7 +103,7 @@
             </Button>
             <Button fx:id="btn4" layoutX="6.0" layoutY="46.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="4" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -92,7 +111,7 @@
             </Button>
             <Button fx:id="btn5" layoutX="58.0" layoutY="41.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -100,7 +119,7 @@
             </Button>
             <Button fx:id="btn6" layoutX="112.0" layoutY="42.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -108,23 +127,29 @@
             </Button>
             <Button fx:id="btnLeftParenthesis" layoutX="235.0" layoutY="50.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="(" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Start Group [(]" />
+               </tooltip>
             </Button>
             <Button fx:id="RightParenthesis" layoutX="294.0" layoutY="51.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text=")" GridPane.columnIndex="5" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="End Group [)]" />
+               </tooltip>
             </Button>
             <Button fx:id="btn1" layoutX="6.0" layoutY="87.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="0.0" styleClass="btn" text="1" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -132,7 +157,7 @@
             </Button>
             <Button fx:id="btn2" layoutX="59.0" layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -140,7 +165,7 @@
             </Button>
             <Button fx:id="btn3" layoutX="120.0" layoutY="80.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="3" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -148,15 +173,18 @@
             </Button>
             <Button fx:id="btnRadic" layoutX="295.0" layoutY="86.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="√" GridPane.columnIndex="5" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Square root" />
+               </tooltip>
             </Button>
             <Button fx:id="btn0" layoutX="7.0" layoutY="128.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="0" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -164,7 +192,7 @@
             </Button>
             <Button fx:id="btnDot" layoutX="62.0" layoutY="124.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="." GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -172,75 +200,105 @@
             </Button>
             <Button fx:id="btnProcent" layoutX="118.0" layoutY="124.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="\%" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Percentage [%]" />
+               </tooltip>
             </Button>
             <Button fx:id="btnMinus" layoutX="171.0" layoutY="82.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Subtract [-]" />
+               </tooltip>
             </Button>
             <Button fx:id="btnMultiply" layoutX="169.0" layoutY="48.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="*" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Multiply [*]" />
+               </tooltip>
             </Button>
             <Button fx:id="btnDivide" layoutX="168.0" layoutY="12.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="/" GridPane.columnIndex="3">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Divide [/]" />
+               </tooltip>
             </Button>
             <Button fx:id="btnPow" layoutX="236.0" layoutY="89.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="x²" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Square" />
+               </tooltip>
             </Button>
             <Button fx:id="btnClear" layoutX="292.0" layoutY="13.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="C" GridPane.columnIndex="5">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Clear Display [Escape]" />
+               </tooltip>
             </Button>
-            <Button fx:id="btnErase" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="⤺" textOverrun="CLIP" GridPane.columnIndex="4">
+            <Button fx:id="btnErase" graphicTextGap="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="⤺" textOverrun="CLIP" GridPane.columnIndex="4">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font name="System Bold" size="21.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Undo" />
+               </tooltip>
             </Button>
             <Button fx:id="btnEquals" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btnEquals" stylesheets="@MainWindowStyle.css" text="=" textFill="WHITE" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <tooltip>
+                  <Tooltip text="Calculate Result [Equals]" />
+               </tooltip>
             </Button>
             <Button fx:id="btnPlus" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onKeyPressed="#onMousePressed" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btn" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
                <GridPane.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>
+               <tooltip>
+                  <Tooltip text="Add [+]" />
+               </tooltip>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </Button>
          </children>
          <columnConstraints>
@@ -258,7 +316,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <padding>
-            <Insets bottom="10.0" top="3.0" />
+            <Insets bottom="9.0" top="3.0" />
          </padding>
       </GridPane>
          </children>

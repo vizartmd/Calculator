@@ -67,6 +67,7 @@ public class MainWindowController {
 
     @FXML
     private void onKeyPressed (KeyEvent evt) {
+        System.out.println(evt.getCode());
         switch (evt.getCode()) {
             case DECIMAL:
                 if (currentOperand.contains(".") || inputProcess.equals("-")) {
@@ -240,7 +241,6 @@ public class MainWindowController {
             inputProcess = "";
         }
         catch (ScriptException e) {
-            System.out.println(e.getMessage());
             wrongExpression.setText("wrong expression!");
             wrongExpression.setTextFill(Color.color(1, 0, 0));
             PauseTransition pause = new PauseTransition(Duration.seconds(3));
@@ -305,7 +305,6 @@ public class MainWindowController {
     @FXML
     void onMousePressed(MouseEvent event) throws ScriptException, InterruptedException {
         String symbol = ((Button) event.getSource()).getId().replace("btn", "");
-        System.out.println(symbol);
         switch (symbol) {
             case "Dot":
                 if (currentOperand.contains(".") || inputProcess.equals("-")) {
@@ -500,7 +499,6 @@ public class MainWindowController {
                 checkExpResult();
                 break;
         }
-        System.out.println("inputProcess = " + inputProcess);
     }
 
     private void reset() {

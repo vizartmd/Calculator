@@ -1,6 +1,6 @@
 .root {
-    -fx-background-radius: 15 15 15 15;
-    -fx-border-radius: 14 14 14 14;
+    -fx-background-radius: 7 7 0 0;
+    -fx-border-radius: 7 7 0 0;
     -fx-border-style: solid solid solid solid;
     -fx-border-width: 1;
     -fx-border-color: #c4c4c4;
@@ -8,7 +8,7 @@
 
 .titlePane {
     -fx-background-color:  #323030;
-    -fx-background-radius: 14 14 0 0;
+    -fx-background-radius: 7 7 0 0;
 }
 
 .listView {
@@ -38,13 +38,31 @@
 }
 
 .minimizeButton:hover {
-    -fx-background-color: #555252;
     -fx-cursor: hand;
+}
+
+.basicMode {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.basicMode:hover {
+    -fx-background-color: #4b4848;
+    -fx-border-color: black;
+}
+.hamburger {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.hamburger:hover {
+    -fx-background-color: #4b4848;
+    -fx-border-color: black;
 }
 
 .gridPane {
     -fx-background-color:  #f7f7f7;
-    -fx-background-radius: 0 0 15 15;
+    -fx-background-radius: 0 0 0 0;
 }
 
 .btn {

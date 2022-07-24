@@ -54,7 +54,7 @@ import static org.example.PopOver.ArrowLocation.*;
 
 public class PopOverSkin implements Skin<PopOver> {
 
-    private static final String DETACHED_STYLE_CLASS = "detached"; //$NON-NLS-1$
+    private static final String DETACHED_STYLE_CLASS = "detached";
 
     private double xOffset;
     private double yOffset;
@@ -83,11 +83,6 @@ public class PopOverSkin implements Skin<PopOver> {
         stackPane.setPickOnBounds(false);
 
         Bindings.bindContent(stackPane.getStyleClass(), popOver.getStyleClass());
-
-        /*
-         * The min width and height equal 2 * corner radius + 2 * arrow indent +
-         * 2 * arrow size.
-         */
         stackPane.minWidthProperty().bind(
                 Bindings.add(Bindings.multiply(2, popOver.arrowSizeProperty()),
                         Bindings.add(
@@ -99,10 +94,9 @@ public class PopOverSkin implements Skin<PopOver> {
         stackPane.minHeightProperty().bind(stackPane.minWidthProperty());
 
         title = new Label();
-        title.textProperty().bind(popOver.titleProperty());
         title.setMaxSize(MAX_VALUE, MAX_VALUE);
         title.setAlignment(Pos.CENTER);
-        title.getStyleClass().add("text"); //$NON-NLS-1$
+        title.getStyleClass().add("text");
 
         closeIcon = new Label();
         closeIcon.setGraphic(createCloseIcon());
@@ -191,11 +185,6 @@ public class PopOverSkin implements Skin<PopOver> {
         path.setManaged(false);
 
         clip = new Path();
-
-        /*
-         * The clip is a path and the path has to be filled with a color.
-         * Otherwise clipping will not work.
-         */
         clip.setFill(YELLOW);
 
         createPathElements();
@@ -268,17 +257,17 @@ public class PopOverSkin implements Skin<PopOver> {
 
     private Node createCloseIcon() {
         Group group = new Group();
-        group.getStyleClass().add("graphics"); //$NON-NLS-1$
+        group.getStyleClass().add("graphics");
 
         Circle circle = new Circle();
-        circle.getStyleClass().add("circle"); //$NON-NLS-1$
+        circle.getStyleClass().add("circle");
         circle.setRadius(6);
         circle.setCenterX(6);
         circle.setCenterY(6);
         group.getChildren().add(circle);
 
         Line line1 = new Line();
-        line1.getStyleClass().add("line"); //$NON-NLS-1$
+        line1.getStyleClass().add("line");
         line1.setStartX(4);
         line1.setStartY(4);
         line1.setEndX(8);
@@ -286,7 +275,7 @@ public class PopOverSkin implements Skin<PopOver> {
         group.getChildren().add(line1);
 
         Line line2 = new Line();
-        line2.getStyleClass().add("line"); //$NON-NLS-1$
+        line2.getStyleClass().add("line");
         line2.setStartX(8);
         line2.setStartY(4);
         line2.setEndX(4);

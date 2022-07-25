@@ -1,14 +1,12 @@
 package org.example;
 
 import javafx.animation.PauseTransition;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -53,6 +51,8 @@ public class MainWindowController {
     private ScriptEngineManager scriptEngineManager;
     private ScriptEngine scriptEngine;
     private Object expResult;
+    private final String BTN_EQUALS_PRESSED = "btnEqualsPressed";
+    private final String BTN_EQUALS = "btnEquals";
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -71,34 +71,21 @@ public class MainWindowController {
         });
         myListView.setEditable(false);
         lblInput.setText(inputProcess);
-
-        btnEquals.setOnMousePressed(e -> {
-            btnEquals.pseudoClassStateChanged(PseudoClass.getPseudoClass("hover"), true);
-        });
-
-        btnEquals.setOnMousePressed(e -> {
-            btnEquals.pseudoClassStateChanged(PseudoClass.getPseudoClass("hover"), false);
-        });
     }
 
     @FXML
     void onBtnEqualsPressed(MouseEvent event) {
-        btnEquals.getStyleClass().remove("btnEquals");
-        btnEquals.getStyleClass().add("btnEqualsPressed");
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.2));
+        btnEquals.getStyleClass().add(BTN_EQUALS_PRESSED);
+        btnEquals.getStyleClass().remove(BTN_EQUALS);
+        PauseTransition pause = new PauseTransition(Duration.millis(100));
         pause.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                btnEquals.getStyleClass().remove("btnEqualsPressed");
-                btnEquals.getStyleClass().add("btnEquals");
+                btnEquals.getStyleClass().remove(BTN_EQUALS_PRESSED);
+                btnEquals.getStyleClass().add(BTN_EQUALS);
             }
         });
         pause.play();
-    }
-
-    @FXML
-    void onBtnEqualsReleased(MouseEvent event) {
-        btnEquals.getStyleClass().remove("btnEqualsPressed");
     }
 
     @FXML
@@ -106,7 +93,6 @@ public class MainWindowController {
         Label basicMode = new Label("Basic Mode");
         basicMode.paddingProperty().set(new Insets(3));
         RadioButton radioButton = new RadioButton();
-//        radioButton.setGraphic(new ImageView(""));
         radioButton.paddingProperty().set(new Insets(3));
         RadioButton radioButton1 = new RadioButton();
         radioButton1.paddingProperty().set(new Insets(3));

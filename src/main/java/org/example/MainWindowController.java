@@ -51,8 +51,6 @@ public class MainWindowController {
     private ScriptEngineManager scriptEngineManager;
     private ScriptEngine scriptEngine;
     private Object expResult;
-    private final String BTN_EQUALS_PRESSED = "btnEqualsPressed";
-    private final String BTN_EQUALS = "btnEquals";
 
     public void init(Stage stage) {
         titlePane.setOnMousePressed(mouseEvent -> {
@@ -75,14 +73,14 @@ public class MainWindowController {
 
     @FXML
     void onBtnEqualsPressed(MouseEvent event) {
-        btnEquals.getStyleClass().add(BTN_EQUALS_PRESSED);
-        btnEquals.getStyleClass().remove(BTN_EQUALS);
+        btnEquals.getStyleClass().add("btnEqualsPressed");
+        btnEquals.getStyleClass().remove("btnEquals");
         PauseTransition pause = new PauseTransition(Duration.millis(100));
         pause.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                btnEquals.getStyleClass().remove(BTN_EQUALS_PRESSED);
-                btnEquals.getStyleClass().add(BTN_EQUALS);
+                btnEquals.getStyleClass().remove("btnEqualsPressed");
+                btnEquals.getStyleClass().add("btnEquals");
             }
         });
         pause.play();

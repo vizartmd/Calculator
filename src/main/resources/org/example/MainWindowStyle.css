@@ -81,12 +81,20 @@
     -fx-border-radius: 4 4 4 4;
 }
 
-.btnEquals:pressed {
-    -fx-background-color: #0e5519;
+.btnEquals:hover {
+    -fx-background-color: #2baa3c;
     -fx-border-color: #05320c;
 }
 
-.scroll-bar:vertical {
+.btnEqualsPressed {
+    -fx-background-color: #123b15;
+    -fx-border-style: solid solid solid solid;
+    -fx-border-width: 1;
+    -fx-border-color: #05320c;
+    -fx-border-radius: 4 4 4 4;
+}
+
+.scroll-bar{
     -fx-pref-width: 3;
     -fx-padding: 0px;
 }

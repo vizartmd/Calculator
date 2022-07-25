@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane minHeight="400.0" minWidth="350.0" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
+<AnchorPane minHeight="400.0" minWidth="350.0" onKeyPressed="#onKeyPressed" prefWidth="350.0" styleClass="root" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainWindowController">
    <children>
       <AnchorPane fx:id="titlePane" minHeight="47.0" minWidth="348.0" prefHeight="47.0" prefWidth="348.0" styleClass="titlePane" stylesheets="@MainWindowStyle.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-0.0">
          <children>
@@ -275,7 +275,7 @@
                   <Tooltip text="Undo" />
                </tooltip>
             </Button>
-            <Button fx:id="btnEquals" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" prefHeight="32.0" prefWidth="49.0" styleClass="btnEquals" stylesheets="@MainWindowStyle.css" text="=" textFill="WHITE" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <Button fx:id="btnEquals" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="32.0" minWidth="49.0" mnemonicParsing="false" onMouseClicked="#onMousePressed" onMousePressed="#onBtnEqualsPressed" onMouseReleased="#onBtnEqualsReleased" prefHeight="32.0" prefWidth="49.0" styleClass="btnEquals" stylesheets="@MainWindowStyle.css" text="=" textFill="WHITE" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </GridPane.margin>

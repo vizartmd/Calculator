@@ -145,156 +145,60 @@ public class MainWindowController {
 
     @FXML
     private void onKeyPressed (KeyEvent evt) {
-        System.out.println(evt.getCode());
         switch (evt.getCode()) {
             case DECIMAL:
-                if (currentOperand.contains(".") || inputProcess.equals("-")) {
-                    return;
-                }
-                if (currentOperand.equals("")) {
-                    currentOperand += "0.";
-                    btnValue = "0.";
-                    inputProcess += "0.";
-                } else {
-                    currentOperand += ".";
-                    btnValue += ".";
-                    inputProcess += ".";
-                }
-                lblInput.setText(inputProcess);
+                addingTheDecimal();
                 break;
             case ADD:
-                if (inputProcess.equals("") || inputProcess.equals("-")  || inputProcess.endsWith("(")) {
-                    return;
-                }
-                operator = "+";
-                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                addOperation();
+                addAddOperation();
                 break;
             case SUBTRACT:
-                operator = "-";
-                if (inputProcess.equals("-") || inputProcess.endsWith("(")){
-                    return;
-                } else if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                subtractOperation();
+                addSubtractOperation();
                 break;
             case MULTIPLY:
-                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")){
-                    return;
-                }
-                operator = "*";
-                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                multiplyOperation();
+                addMultiplyOperation();
                 break;
             case DIVIDE:
-                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")){
-                    return;
-                }
-                operator = "/";
-                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                divideOperations();
+                addDivideOperation();
                 break;
             case NUMPAD1:
-                btnValue = "1";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheOneDigit();
                 break;
             case NUMPAD2:
-                btnValue = "2";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheTwoDigit();
                 break;
             case NUMPAD3:
-                btnValue = "3";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheThreeDigit();
                 break;
             case NUMPAD4:
-                btnValue = "4";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheFourDigit();
                 break;
             case NUMPAD5:
-                btnValue = "5";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheFiveDigit();
                 break;
             case NUMPAD6:
-                btnValue = "6";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheSixDigit();
                 break;
             case NUMPAD7:
-                btnValue = "7";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheSevenDigit();
                 break;
             case NUMPAD8:
-                btnValue = "8";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheEightDigit();
                 break;
             case NUMPAD9:
-                btnValue = "9";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheNineDigit();
                 break;
             case NUMPAD0:
-                btnValue = "0";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addingTheZeroDigit();
                 break;
             case LEFT_PARENTHESIS:
-                if (!inputProcess.endsWith("+") || !inputProcess.endsWith("-") || !inputProcess.endsWith("*") || !inputProcess.endsWith("/")) {
-                    return;
-                }
-                btnValue = "(";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                operator = "";
+                insertLeftParenthesis();
                 break;
             case RIGHT_PARENTHESIS:
-                if (inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    return;
-                }
-                btnValue = ")";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                operator = "";
+                insertRightParenthesis();
                 break;
             case BACK_SPACE:
-                if (inputProcess.equals("")) {
-                    return;
-                }
-                inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
-                lblInput.setText(inputProcess);
+                removeLastCharacter();
                 break;
             case ESCAPE:
                 reset();
@@ -303,14 +207,165 @@ public class MainWindowController {
                 if (inputProcess.equals("")) {
                     return;
                 }
-                scriptEngineManager = new ScriptEngineManager();
-                scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
                 checkExpResult();
                 break;
         }
     }
 
+    private void addingTheDecimal() {
+        if (currentOperand.contains(".") || inputProcess.equals("-")) {
+            return;
+        }
+        if (currentOperand.equals("")) {
+            currentOperand += "0.";
+            btnValue = "0.";
+            inputProcess += "0.";
+        } else {
+            currentOperand += ".";
+            btnValue += ".";
+            inputProcess += ".";
+        }
+        lblInput.setText(inputProcess);
+    }
+
+    private void addingTheOneDigit() {
+        btnValue = "1";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheTwoDigit() {
+        btnValue = "2";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheThreeDigit() {
+        btnValue = "3";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheFourDigit() {
+        btnValue = "4";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheFiveDigit() {
+        btnValue = "5";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheSixDigit() {
+        btnValue = "6";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheSevenDigit() {
+        btnValue = "7";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheEightDigit() {
+        btnValue = "8";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheNineDigit() {
+        btnValue = "9";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addingTheZeroDigit() {
+        btnValue = "0";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addAddOperation() {
+        setOperatorToAdd();
+    }
+
+    private void setOperatorToAdd() {
+        if (inputProcess.equals("") || inputProcess.equals("-")  || inputProcess.endsWith("(")) {
+            return;
+        }
+        operator = "+";
+        if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+            removeOperator();
+        }
+        addOperation();
+    }
+
+    private void addSubtractOperation() {
+        setOperatorToMinus();
+    }
+
+    private void addMultiplyOperation() {
+        setOperatorToMultiply();
+    }
+
+    private void addDivideOperation() {
+        setOperatorToDivide();
+    }
+
+    private void insertLeftParenthesis() {
+        if (!inputProcess.endsWith("+") || !inputProcess.endsWith("-") || !inputProcess.endsWith("*") || !inputProcess.endsWith("/")) {
+            return;
+        }
+        btnValue = "(";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        operator = "";
+    }
+
+    private void insertRightParenthesis() {
+        if (inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+        return;
+    }
+        btnValue = ")";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        operator = "";
+    }
+
+    private void removeLastCharacter() {
+        if (inputProcess.equals("")) {
+            return;
+        }
+        inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
+        lblInput.setText(inputProcess);
+    }
+
     private void checkExpResult() {
+        scriptEngineManager = new ScriptEngineManager();
+        scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
         try {
             expResult = scriptEngine.eval(inputProcess);
             lblInput.setText(expResult.toString());
@@ -374,8 +429,6 @@ public class MainWindowController {
         }
         if (operations.size() > 0) {
             operations.remove(operations.size() - 1);
-        }
-        if (operands.size() > 0) {
             operands.remove(operands.size() - 1);
         }
     }
@@ -385,198 +438,290 @@ public class MainWindowController {
         String symbol = ((Button) event.getSource()).getId().replace("btn", "");
         switch (symbol) {
             case "Dot":
-                if (currentOperand.contains(".") || inputProcess.equals("-")) {
-                    return;
-                }
-                if (currentOperand.equals("") || inputProcess.endsWith("(")) {
-                    currentOperand += "0.";
-                    btnValue = "0.";
-                    inputProcess += "0.";
-                } else {
-                    currentOperand += ".";
-                    btnValue += ".";
-                    inputProcess += ".";
-                }
-                lblInput.setText(inputProcess);
+                addDecimalOnMousePressed();
                 break;
             case "Plus":
-                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
-                    return;
-                }
-                operator = "+";
-                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                addOperation();
+                addPlusOnMousePressed();
                 break;
             case "Minus":
-                operator = "-";
-                if (inputProcess.equals("-") || inputProcess.endsWith("(")) {
-                    return;
-                } else if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                subtractOperation();
+                addMinusOnMousePressed();
                 break;
             case "Multiply":
-                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
-                    return;
-                }
-                operator = "*";
-                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                multiplyOperation();
+                addMultiplyOnMousePressed();
                 break;
             case "Divide":
-                if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
-                    return;
-                }
-                operator = "/";
-                if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
-                    removeOperator();
-                }
-                divideOperations();
+                addDivideOnMousePressed();
                 break;
             case "1":
-                btnValue = "1";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitOneOnMousePressed();
                 break;
             case "2":
-                btnValue = "2";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitTwoOnMousePressed();
                 break;
             case "3":
-                btnValue = "3";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitThreeOnMousePressed();
                 break;
             case "4":
-                btnValue = "4";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitFourOnMousePressed();
                 break;
             case "5":
-                btnValue = "5";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitFiveOnMousePressed();
                 break;
             case "6":
-                btnValue = "6";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitSixOnMousePressed();
                 break;
             case "7":
-                btnValue = "7";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitSevenOnMousePressed();
                 break;
             case "8":
-                btnValue = "8";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitEightOnMousePressed();
                 break;
             case "9":
-                btnValue = "9";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitNineOnMousePressed();
                 break;
             case "0":
-                btnValue = "0";
-                inputProcess += btnValue;
-                lblInput.setText(inputProcess);
-                currentOperand += btnValue;
-                operator = "";
+                addDigitZeroOnMousePressed();
                 break;
             case "Pow":
-                if (lblInput.getText().equals("") || lblInput.getText().contains("+")
-                        || lblInput.getText().contains("-") || lblInput.getText().contains("*")
-                        || lblInput.getText().contains("/")) {
-                    return;
-                }
-                inputProcess = String.valueOf(lblInput.getText());
-                lblInput1.setText(inputProcess);
-                inputProcess += "²";
-                double powResult = Math.pow(Double.parseDouble(lblInput1.getText()), 2);
-                myListView.getItems().add(0, inputProcess + " = " + powResult);
-                reset();
-                lblInput.setText(String.valueOf(powResult));
+                getTheResultOfTheNumberSquared();
                 break;
             case "Radic":
-                if (lblInput.getText().equals("") || lblInput.getText().contains("+")
-                        || lblInput.getText().contains("-") || lblInput.getText().contains("*")
-                        || lblInput.getText().contains("/")) {
-                    return;
-                }
-                if (!lblInput.getText().equals("")) {
-                    if (lblInput.getText().startsWith("-")) {
-                        return;
-                    }
-                    lblInput1.setText(lblInput.getText());
-                    lblInput.setText("√" + lblInput.getText());
-                } else {
-                    lblInput.setText("√");
-                }
-                Double sqrtResult = Math.sqrt(Double.parseDouble(lblInput1.getText()));
-                inputProcess = lblInput.getText();
-                myListView.getItems().add(0, inputProcess + " = " + sqrtResult);
-                reset();
-                lblInput.setText(String.valueOf(sqrtResult));
+                extractRadical();
                 break;
             case "Procent":
-                if (inputProcess.equals("")) {
-                    return;
-                }
-                inputProcess += "%";
-                lblInput.setText(inputProcess);
+                getRemainderAfterDivision();
                 break;
             case "Clear":
                 reset();
                 break;
             case "Erase":
-                if (inputProcess.equals("")) {
-                    return;
-                }
-                inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
-                lblInput.setText(inputProcess);
+                eraseLastSymbol();
                 break;
             case "LeftParenthesis":
-                inputProcess += "(";
-                lblInput.setText(inputProcess);
+                addLeftParenthesis();
                 break;
             case "RightParenthesis":
-                inputProcess += ")";
-                lblInput.setText(inputProcess);
+                addRightParenthesis();
                 break;
             case "Equals":
-                if (inputProcess.equals("")) {
-                    return;
-                }
-                scriptEngineManager = new ScriptEngineManager();
-                scriptEngine = scriptEngineManager.getEngineByName("Nashorn");
-                checkExpResult();
+                evaluateTheResult();
                 break;
+            default:
         }
+    }
+
+    private void evaluateTheResult() {
+        if (inputProcess.equals("")) {
+            return;
+        }
+        checkExpResult();
+    }
+
+    private void addRightParenthesis() {
+        inputProcess += ")";
+        lblInput.setText(inputProcess);
+    }
+
+    private void addLeftParenthesis() {
+        inputProcess += "(";
+        lblInput.setText(inputProcess);
+    }
+
+    private void eraseLastSymbol() {
+        if (inputProcess.equals("")) {
+            return;
+        }
+        inputProcess = inputProcess.substring(0, inputProcess.length() - 1);
+        lblInput.setText(inputProcess);
+    }
+
+    private void getTheResultOfTheNumberSquared() {
+        if (lblInput.getText().equals("") || lblInput.getText().contains("+")
+                || lblInput.getText().contains("-") || lblInput.getText().contains("*")
+                || lblInput.getText().contains("/")) {
+            return;
+        }
+        inputProcess = String.valueOf(lblInput.getText());
+        lblInput1.setText(inputProcess);
+        inputProcess += "²";
+        double powResult = Math.pow(Double.parseDouble(lblInput1.getText()), 2);
+        myListView.getItems().add(0, inputProcess + " = " + powResult);
+        reset();
+        lblInput.setText(String.valueOf(powResult));
+    }
+
+    private void addDigitZeroOnMousePressed() {
+        btnValue = "0";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitNineOnMousePressed() {
+        btnValue = "9";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitEightOnMousePressed() {
+        btnValue = "8";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitSevenOnMousePressed() {
+        btnValue = "7";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitSixOnMousePressed() {
+        btnValue = "6";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitFiveOnMousePressed() {
+        btnValue = "5";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitFourOnMousePressed() {
+        btnValue = "4";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitThreeOnMousePressed() {
+        btnValue = "3";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitTwoOnMousePressed() {
+        btnValue = "2";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDigitOneOnMousePressed() {
+        btnValue = "1";
+        inputProcess += btnValue;
+        lblInput.setText(inputProcess);
+        currentOperand += btnValue;
+        operator = "";
+    }
+
+    private void addDivideOnMousePressed() {
+        setOperatorToDivide();
+    }
+
+    private void setOperatorToDivide() {
+        if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
+            return;
+        }
+        operator = "/";
+        if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+            removeOperator();
+        }
+        divideOperations();
+    }
+
+    private void addMultiplyOnMousePressed() {
+        setOperatorToMultiply();
+    }
+
+    private void setOperatorToMultiply() {
+        if (inputProcess.equals("") || inputProcess.equals("-") || inputProcess.endsWith("(")) {
+            return;
+        }
+        operator = "*";
+        if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+            removeOperator();
+        }
+        multiplyOperation();
+    }
+
+    private void addMinusOnMousePressed() {
+        setOperatorToMinus();
+        if (inputProcess.equals("-") || inputProcess.endsWith("(")) {
+            return;
+        } else if (inputProcess.endsWith(".") || inputProcess.endsWith("+") || inputProcess.endsWith("-") || inputProcess.endsWith("*") || inputProcess.endsWith("/")) {
+            removeOperator();
+        }
+        subtractOperation();
+    }
+
+    private void setOperatorToMinus() {
+        operator = "-";
+    }
+
+    private void addPlusOnMousePressed() {
+        setOperatorToAdd();
+    }
+
+    private void addDecimalOnMousePressed() {
+        if (currentOperand.contains(".") || inputProcess.equals("-")) {
+            return;
+        }
+        if (currentOperand.equals("") || inputProcess.endsWith("(")) {
+            currentOperand += "0.";
+            btnValue = "0.";
+            inputProcess += "0.";
+        } else {
+            currentOperand += ".";
+            btnValue += ".";
+            inputProcess += ".";
+        }
+        lblInput.setText(inputProcess);
+    }
+
+    private void getRemainderAfterDivision() {
+        if (inputProcess.equals("")) {
+            return;
+        }
+        inputProcess += "%";
+        lblInput.setText(inputProcess);
+    }
+
+    private void extractRadical() {
+        if (lblInput.getText().equals("") || lblInput.getText().contains("+")
+                || lblInput.getText().contains("-") || lblInput.getText().contains("*")
+                || lblInput.getText().contains("/")) {
+            return;
+        }
+        if (!lblInput.getText().equals("")) {
+            if (lblInput.getText().startsWith("-")) {
+                return;
+            }
+            lblInput1.setText(lblInput.getText());
+            lblInput.setText("√" + lblInput.getText());
+        } else {
+            lblInput.setText("√");
+        }
+        Double sqrtResult = Math.sqrt(Double.parseDouble(lblInput1.getText()));
+        inputProcess = lblInput.getText();
+        myListView.getItems().add(0, inputProcess + " = " + sqrtResult);
+        reset();
+        lblInput.setText(String.valueOf(sqrtResult));
     }
 
     private void reset() {
